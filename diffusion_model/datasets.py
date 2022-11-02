@@ -21,9 +21,10 @@ def get_moons_dataset(n_samples, noise=0.05):
     return X
 
 
-def get_mnist_dataset(n_samples):
+def get_mnist_dataset(n_samples=None):
     X = datasets.MNIST(root="../datasets", download=True, train=True)
     X = X.data.float().to(device)
-    X = X[torch.randperm(X.shape[0])][:n_samples]
+    if n_samples is not None:
+        X = X[torch.randperm(X.shape[0])][:n_samples]
     X = 2 * X / 255 - 1  # normalize to [-1, 1]
     return X

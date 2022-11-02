@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-
+import numpy as np
 
 from .forward_module import ForwardModule
 from .scheduler import Scheduler
@@ -39,7 +39,7 @@ class BackwardModule:
 
     def loop_backward(self, n_sample=1000, nb_displayed_steps=10):
         x_t = torch.randn((n_sample, *self.d)).to(device)
-        xs = [x_t]
+        xs = [x_t.detach().cpu()]
         for t in range(self.nb_steps)[::-1]:
             x_t = self.batched_backward(x_t, t)
             if t % (self.nb_steps // nb_displayed_steps) == 0:

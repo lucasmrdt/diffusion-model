@@ -6,6 +6,7 @@ from einops import rearrange
 
 from .base_model import BaseNoiseModel
 from ..embeddings import LinearEmbedding, SinusoidalEmbeddings
+from ..constants import device
 
 
 class Block(nn.Module):
@@ -77,31 +78,27 @@ class UNet(nn.Module):
 
 
 class UNetNoiseModel(BaseNoiseModel):
-    def __init__(self, forward_module, scheduler, embedding_type="linear"):
+    def __init__(self, forward_module, scheduler, time_embedding, label_embedding):
         super().__init__(forward_module, scheduler)
+        self.nb_steps = scheduler.nb_steps
         self.input_dim = scheduler.input_dim
-        self.embedding = self._get_embedding(embedding_type)
+        self.time_embedding = time_embedding
+        self.label_embedding = label_embedding
 
         # common_chs = (64, 128, 256, 512, 1024)
-        common_chs = (64, 128)
+        common_chs = (32, 64, 128)
         self.unet = UNet(in_chs=(2, *common_chs),
-                         out_chs=(*common_chs[::-1], 1))
+                         out_chs=(*common_chs[::-1], 1)).to(device)
 
-    def _get_embedding(self, embedding_type):
-        if embedding_type == "sinusoidal":
-            embedding = SinusoidalEmbeddings(self.input_dim)
-        elif embedding_type == "linear":
-            embedding = LinearEmbedding(self.input_dim, self.nb_steps)
-        else:
-            raise NotImplementedError(
-                f"Embedding {embedding_type} not implemented")
-        return embedding
+    def forward(self, x, time_step, label):
+        time_step = self.embedding(time_step)
+        label = self.embedding(time_step)
 
-    def forward(self, x, t):
-        t = self.embedding(t)
-        x = rearrange(x, "d h w -> d () h w")
-        t = rearrange(t, "d h w -> d () h w")
-        x = torch.cat([x, t], dim=1)
+        x = rearrange(x, "n h w -> n () h w")
+        time_step = rearrange(time_step, "n h w -> n () h w")
+        label = rearrange(label, "n h w -> n () h w")
+        x = torch.cat([x, time_step, label], dim=1)
+
         x = self.unet(x)
         x = rearrange(x, "d () h w -> d h w")
         return x

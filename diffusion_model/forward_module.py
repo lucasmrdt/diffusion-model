@@ -22,6 +22,7 @@ class ForwardModule:
         d = " ".join([f"d{i}" for i in range(len(dim))])  # eg. "d0 d1" for 2D
         t_step = self.nb_steps // (nb_displayed_steps-1)
         t = torch.arange(0, self.nb_steps, step=t_step).to(device)
+        print(t)
         ts = repeat(t, "t -> (n t)", n=n_samples)
         xs_0 = repeat(xs_0, f"n {d} -> (n t) {d}", t=nb_displayed_steps)
         xs_t, _ = self.batched_forward(xs_0, ts)
