@@ -20,8 +20,8 @@ class Block(nn.Module):
         x = self.conv1(x)
         x = self.relu(x)
         # x = self.bn(x)
-        # x = self.conv2(x)
-        # x = self.relu(x)
+        x = self.conv2(x)
+        x = self.relu(x)
         # x = self.bn(x)
         return x
 
@@ -88,7 +88,7 @@ class UNetNoiseModel(BaseNoiseModel):
         self.label_embedding = label_embedding
 
         # common_chs = (64, 128, 256, 512, 1024)
-        common_chs = (32, 64, 128)
+        common_chs = (64, 128, 256)
         self.unet = UNet(in_chs=(3, *common_chs),
                          out_chs=(*common_chs[::-1], 1)).to(device)
 
@@ -97,9 +97,9 @@ class UNetNoiseModel(BaseNoiseModel):
         label = self.label_embedding(label)
 
         h, w = self.input_dim
-        x = rearrange(x, "n h w -> n () h w")
-        time_step = rearrange(time_step, "n (h w) -> n () h w", h=h)
-        label = rearrange(label, "n (h w) -> n () h w", h=h)
+        x = rearrange(x, "n h w -> n 1 h w")
+        time_step = rearrange(time_step, "n (h w) -> n 1 h w", h=h)
+        label = rearrange(label, "n (h w) -> n 1 h w", h=h)
         x = torch.cat([x, time_step, label], dim=1)
 
         x = self.unet(x)

@@ -12,6 +12,13 @@ from .constants import device
 #     betas = betas.clamp(0, max_beta)
 #     return betas
 
+def get_linear_betas(nb_steps, min_alpha_bar=0, max_alpha_bar=1, max_beta=0.999):
+    ts = torch.linspace(max_alpha_bar, min_alpha_bar, nb_steps+1).to(device)
+    betas = 1 - ts[1:]/ts[:-1]
+    betas = betas.clamp(0, max_beta)
+    return betas
+
+
 def get_linear_reparam_betas(nb_steps, min_alpha_bar=0, max_alpha_bar=1, max_beta=0.999):
     def f(t): return 1 - (1 - t)**2
     ts = torch.linspace(max_alpha_bar, min_alpha_bar, nb_steps+1).to(device)
@@ -41,6 +48,8 @@ class Scheduler:
             betas = get_linear_reparam_betas(nb_steps, **scheduler_kwargs)
         elif schedule_type == "cosine":
             betas = get_cosine_betas(nb_steps, **scheduler_kwargs)
+        elif schedule_type == "linear":
+            betas = get_linear_betas(nb_steps, **scheduler_kwargs)
         else:
             raise ValueError(f"Unknown schedule_type {schedule_type}")
 

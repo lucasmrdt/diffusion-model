@@ -31,6 +31,7 @@ class LinearEmbedding(nn.Module):
 
     def forward(self, x):
         x = 2 * (x-self.min_val) / (self.max_val-self.min_val) - 1  # [-1, 1]
+        # x = (x-self.min_val) / (self.max_val-self.min_val)  # [0, 1]
         x = repeat(x, "n -> n d", d=self.dim)
         return x
 
@@ -53,7 +54,8 @@ class MLPEmbedding(nn.Module):
         if training:
             return self.nn(x)
         else:
-            return 2 * self.embedding(x) - 1
+            # return self.embedding(x)
+            return 2 * self.embedding(x) - 1  # [-1, 1]
 
     def fit(self, dataloader, nb_epochs=200):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
