@@ -30,9 +30,8 @@ class LinearEmbedding(nn.Module):
         self.max_val = max_val
 
     def forward(self, x):
-        x = 2 * (x - self.min_val) / \
-            (self.max_val - self.min_val) - 1  # [-1, 1]
-        x = repeat(x, 'n -> n d', d=self.dim)
+        x = 2 * (x-self.min_val) / (self.max_val-self.min_val) - 1  # [-1, 1]
+        x = repeat(x, "n -> n d", d=self.dim)
         return x
 
 
