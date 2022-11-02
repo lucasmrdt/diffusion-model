@@ -5,7 +5,6 @@ from torch import nn
 from einops import rearrange
 
 from .base_model import BaseNoiseModel
-from ..embeddings import LinearEmbedding, SinusoidalEmbeddings
 from ..constants import device
 
 
@@ -87,16 +86,17 @@ class UNetNoiseModel(BaseNoiseModel):
 
         # common_chs = (64, 128, 256, 512, 1024)
         common_chs = (32, 64, 128)
-        self.unet = UNet(in_chs=(2, *common_chs),
+        self.unet = UNet(in_chs=(3, *common_chs),
                          out_chs=(*common_chs[::-1], 1)).to(device)
 
     def forward(self, x, time_step, label):
-        time_step = self.embedding(time_step)
-        label = self.embedding(time_step)
+        time_step = self.time_embedding(time_step)
+        label = self.label_embedding(label)
 
+        h, w = self.input_dim
         x = rearrange(x, "n h w -> n () h w")
-        time_step = rearrange(time_step, "n h w -> n () h w")
-        label = rearrange(label, "n h w -> n () h w")
+        time_step = rearrange(time_step, "n (h w) -> n () h w", h=h)
+        label = rearrange(label, "n (h w) -> n () h w", h=h)
         x = torch.cat([x, time_step, label], dim=1)
 
         x = self.unet(x)

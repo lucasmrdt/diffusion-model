@@ -23,7 +23,7 @@ class BaseNoiseModel(nn.Module):
         self.scheduler = scheduler
         self.nb_steps = scheduler.nb_steps
 
-    def forward(self, x, t):
+    def forward(self, x, t, label):
         raise NotImplementedError
 
     def fit(self, dataloader, optimizer="adam", optimizer_kwargs={}, nb_epochs=200, logger=None):
@@ -32,14 +32,14 @@ class BaseNoiseModel(nn.Module):
 
         for epoch in tqdm(range(nb_epochs)):
             losses = []
-            for step, batch in enumerate(dataloader):
+            for step, (X, label) in enumerate(dataloader):
                 optimizer.zero_grad()
 
-                batch_size = batch.shape[0]
+                batch_size = X.shape[0]
+
                 t = torch.randint(0, self.nb_steps, (batch_size,)).to(device)
-                batch_noisy, noise = self.forward_module.batched_forward(
-                    batch, t)
-                noise_pred = self.forward(batch_noisy, t)
+                batch_noisy, noise = self.forward_module.batched_forward(X, t)
+                noise_pred = self.forward(batch_noisy, t, label)
 
                 loss = F.mse_loss(noise_pred, noise)
                 losses.append(loss.item())

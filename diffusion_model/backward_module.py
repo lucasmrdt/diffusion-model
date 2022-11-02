@@ -27,21 +27,21 @@ class BackwardModule:
         sigmas = sigmas.sqrt()
         return sigmas
 
-    def batched_backward(self, x_t, t):
+    def batched_backward(self, x_t, t, label):
         if t > 0:
             z = torch.randn_like(x_t).to(device)
         else:
             z = torch.zeros_like(x_t).to(device)
         t = torch.full((x_t.shape[0],), t).long().to(device)
-        eps_pred = self.noise_model(x_t, t)
+        eps_pred = self.noise_model(x_t, t, label)
         sch = self.scheduler
         return 1/(sch.sqrt_alpha[t]) * (x_t - sch.betas[t]/(sch.sqrt_one_minus_alphas_bar[t]) * eps_pred) + self.sigmas[t]*z
 
-    def loop_backward(self, n_sample=1000, nb_displayed_steps=10):
+    def loop_backward(self, label, n_sample=1000, nb_displayed_steps=10):
         x_t = torch.randn((n_sample, *self.d)).to(device)
         xs = [x_t.detach().cpu()]
         for t in range(self.nb_steps)[::-1]:
-            x_t = self.batched_backward(x_t, t)
+            x_t = self.batched_backward(x_t, t, label)
             if t % (self.nb_steps // nb_displayed_steps) == 0:
                 xs.append(x_t.detach().cpu())
         return xs[::-1]

@@ -30,38 +30,45 @@ class LinearEmbedding(nn.Module):
         self.max_val = max_val
 
     def forward(self, x):
-        w, h = self.dim
-        x = 2 * (x - self.min) / (self.max_val - self.min_val) - 1  # [-1, 1]
-        x = repeat(x, 'n -> n w h', w=w, h=h)
+        x = 2 * (x - self.min_val) / \
+            (self.max_val - self.min_val) - 1  # [-1, 1]
+        x = repeat(x, 'n -> n d', d=self.dim)
         return x
 
 
 class MLPEmbedding(nn.Module):
     def __init__(self, input_dim, output_dim):
         super().__init__()
-        self.loss_fn = nn.CrossEntropyLoss()
+        self.loss_fn = nn.functional.binary_cross_entropy
         self.embedding = nn.Sequential(
             nn.Linear(input_dim, output_dim),
-            nn.ReLU(),
-            nn.Linear(output_dim, input_dim)
+            nn.Sigmoid(),
         ).to(device)
-        self.nn = nn.Sequential(self.embedding, nn.Softmax()).to(device)
+        self.nn = nn.Sequential(
+            self.embedding,
+            nn.Linear(output_dim, input_dim),
+            nn.Softmax(dim=-1)
+        ).to(device)
 
-    def forward(self, x):
-        return self.nn(x)
+    def forward(self, x, training=False):
+        if training:
+            return self.nn(x)
+        else:
+            return 2 * self.embedding(x) - 1
 
     def fit(self, dataloader, nb_epochs=200):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
+        last_loss = None
 
-        for epoch in range(nb_epochs):
+        for _ in tqdm(range(nb_epochs)):
             losses = []
-
-            for i, (X, y) in tqdm(enumerate(dataloader)):
+            for X in dataloader:
                 optimizer.zero_grad()
-                loss = self.loss_fn(self.forward(X), y)
+                X_pred = self.forward(X, training=True)
+                loss = self.loss_fn(X_pred, X)
                 losses.append(loss.item())
                 loss.backward()
                 optimizer.step()
+            last_loss = sum(losses) / len(losses)
 
-            if i % (nb_epochs // 10) == 0:
-                print(f"[Epoch {epoch}]: loss={sum(losses)/len(losses)}")
+        return last_loss

@@ -4,6 +4,14 @@ from einops import repeat
 from .constants import device
 
 
+# def get_linear_reparam_betas(nb_steps, min_alpha_bar=0, max_alpha_bar=1, max_beta=0.999):
+#     def f(t): return 1 - (1 - t)**2
+#     ts = torch.linspace(max_alpha_bar, min_alpha_bar, nb_steps).to(device)
+#     ts_prev = torch.cat([ts[:1], ts[:-1]])
+#     betas = 1 - f(ts)/f(ts_prev)
+#     betas = betas.clamp(0, max_beta)
+#     return betas
+
 def get_linear_reparam_betas(nb_steps, min_alpha_bar=0, max_alpha_bar=1, max_beta=0.999):
     def f(t): return 1 - (1 - t)**2
     ts = torch.linspace(max_alpha_bar, min_alpha_bar, nb_steps+1).to(device)
