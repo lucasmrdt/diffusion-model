@@ -38,7 +38,7 @@ class BackwardModule:
         return 1/(sch.sqrt_alpha[t]) * (x_t - sch.betas[t]/(sch.sqrt_one_minus_alphas_bar[t]) * eps_pred) + self.sigmas[t]*z
 
     def loop_backward(self, n_sample=1000, nb_displayed_steps=10):
-        x_t = torch.randn((n_sample, self.d)).to(device)
+        x_t = torch.randn((n_sample, *self.d)).to(device)
         xs = [x_t]
         for t in range(self.nb_steps)[::-1]:
             x_t = self.batched_backward(x_t, t)

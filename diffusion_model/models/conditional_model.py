@@ -22,7 +22,7 @@ class ConditionalLinear(nn.Module):
 
 
 class ConditionalNoiseModel(BaseNoiseModel):
-    def __init__(self,  forward_module, scheduler):
+    def __init__(self, forward_module, scheduler):
         super().__init__(forward_module, scheduler)
         input_dim = scheduler.input_dim
         nb_steps = scheduler.nb_steps

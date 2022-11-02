@@ -24,6 +24,9 @@ def get_cosine_betas(nb_steps, min_alpha_bar=0, max_alpha_bar=1, max_beta=0.999)
 class Scheduler:
     def __init__(self, input_dim, nb_steps, scheduler="linear-reparam", scheduler_kwargs={}):
         self.nb_steps = nb_steps
+
+        if isinstance(input_dim, int):
+            input_dim = (input_dim,)
         self.input_dim = input_dim
 
         if scheduler == "linear-reparam":
@@ -32,12 +35,14 @@ class Scheduler:
             betas = get_cosine_betas(nb_steps, **scheduler_kwargs)
         else:
             raise ValueError(f"Unknown scheduler {scheduler}")
-        self.betas = repeat(betas, "t -> t d", d=input_dim)
+
+        ds = {f"d{i}": d for i, d in enumerate(input_dim)}
+        self.betas = repeat(betas, f"t -> t {' '.join(ds.keys())}", **ds)
 
         self.alphas = 1 - self.betas
         self.sqrt_alpha = self.alphas.sqrt()
         self.alphas_bar = self.alphas.cumprod(dim=0)
         self.alphas_bar_prev = torch.cat(
-            [torch.ones(1, input_dim).to(device), self.alphas_bar[:-1]])
+            [torch.ones(1, *input_dim).to(device), self.alphas_bar[:-1]])
         self.sqrt_alphas_bar = self.alphas_bar.sqrt()
         self.sqrt_one_minus_alphas_bar = (1 - self.alphas_bar).sqrt()
