@@ -23,7 +23,7 @@ class SinusoidalEmbeddings(nn.Module):
 
 
 class LinearEmbedding(nn.Module):
-    def __init__(self, dim, min_val, max_val):
+    def __init__(self, dim, min_val=0, max_val=1):
         super().__init__()
         self.dim = dim
         self.min_val = min_val
