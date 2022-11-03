@@ -120,18 +120,22 @@ class UNetNoiseModel(BaseNoiseModel):
             nn.ReLU(),
         ).to(device)
 
-        self.conv0 = nn.Conv2d(1, chs[0], kernel_size=3, padding=1)
+        self.conv0 = nn.Conv2d(1, chs[0], kernel_size=3, padding=1).to(device)
 
         self.downs = nn.ModuleList([
             Block(down_chs[i], down_chs[i+1], emb_dim, up=False) for i in range(len(down_chs) - 1)
-        ])
+        ]).to(device)
         self.ups = nn.ModuleList([
             Block(up_chs[i], up_chs[i+1], emb_dim, up=True) for i in range(len(up_chs) - 1)
-        ])
+        ]).to(device)
 
-        self.output = nn.Conv2d(up_chs[-1], 1, kernel_size=1)
+        self.output = nn.Conv2d(up_chs[-1], 1, kernel_size=1).to(device)
 
     def forward(self, x, time, label):
+        x = rearrange(x, "b h w -> b 1 h w")
+        time = rearrange(time, "b -> b 1")
+        label = rearrange(label, "b -> b 1")
+
         time = self.time_mlp(rescale(time, (0, self.nb_steps-1), (-1, 1)))
         label = self.label_mlp(one_hot_encode(label, self.nb_labels))
 
@@ -145,7 +149,9 @@ class UNetNoiseModel(BaseNoiseModel):
             x = torch.cat([x, res_input], dim=1)
             x = up(x, (time, label))
 
-        return self.output(x)
+        x = self.output(x)
+        x = rearrange(x, "b 1 h w -> b h w")
+        return x
 
 
 # class UNetNoiseModel(BaseNoiseModel):

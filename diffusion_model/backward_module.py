@@ -32,7 +32,9 @@ class BackwardModule:
             z = torch.randn_like(x_t).to(device)
         else:
             z = torch.zeros_like(x_t).to(device)
-        t = torch.full((x_t.shape[0],), t).long().to(device)
+        b = x_t.shape[0]
+        t = torch.full((b,), t).to(device)
+        label = torch.full((b,), label).to(device)
         eps_pred = self.noise_model(x_t, t, label)
         sch = self.scheduler
         return 1/(sch.sqrt_alpha[t]) * (x_t - sch.betas[t]/(sch.sqrt_one_minus_alphas_bar[t]) * eps_pred) + self.sigmas[t]*z

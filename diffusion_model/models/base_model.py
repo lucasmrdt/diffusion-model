@@ -41,11 +41,7 @@ class BaseNoiseModel(nn.Module):
                 t = torch.randint(0, self.nb_steps, (batch_size,)).to(device)
                 batch_noisy, noise = self.forward_module.batched_forward(x, t)
 
-                label = rearrange(label, "b -> b ()")
-                t = rearrange(t, "b -> b ()")
-                batch_noisy = rearrange(batch_noisy, "b h w -> b () h w")
                 noise_pred = self.forward(batch_noisy, t, label)
-                noise_pred = rearrange(noise_pred, "b 1 h w -> b h w")
 
                 loss = F.mse_loss(noise_pred, noise)
                 losses.append(loss.item())
