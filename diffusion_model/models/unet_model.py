@@ -112,13 +112,13 @@ class UNetNoiseModel(BaseNoiseModel):
             nn.ReLU(),
             nn.Linear(emb_dim, emb_dim),
             nn.ReLU(),
-        )
+        ).to(device)
         self.label_mlp = nn.Sequential(
             nn.Linear(self.nb_labels, emb_dim),
             nn.ReLU(),
             nn.Linear(emb_dim, emb_dim),
             nn.ReLU(),
-        )
+        ).to(device)
 
         self.conv0 = nn.Conv2d(1, chs[0], kernel_size=3, padding=1)
 
