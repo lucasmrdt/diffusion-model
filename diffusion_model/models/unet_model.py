@@ -13,7 +13,14 @@ class Block(nn.Module):
     def __init__(self, in_ch, out_ch, emb_dim, up=False) -> None:
         super().__init__()
         # print(in_ch, out_ch, input_dim)
-        self.conv1 = nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1)
+        if up:
+            self.conv1 = nn.Conv2d(2*in_ch, out_ch, kernel_size=3, padding=1)
+            self.transform = nn.ConvTranspose2d(
+                out_ch, out_ch, kernel_size=2, stride=2)
+        else:
+            self.conv1 = nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1)
+            self.transform = nn.MaxPool2d(kernel_size=2, stride=2)
+
         self.conv2 = nn.Conv2d(out_ch, out_ch, kernel_size=3, padding=1)
         self.bn1 = nn.BatchNorm2d(out_ch)
         self.bn2 = nn.BatchNorm2d(out_ch)
@@ -21,12 +28,6 @@ class Block(nn.Module):
         self.scale_mlp = nn.Linear(emb_dim, out_ch)
         self.shift_mlp = nn.Linear(emb_dim, out_ch)
         self.act = nn.ReLU()
-
-        if up:
-            self.transform = nn.ConvTranspose2d(
-                out_ch, out_ch, kernel_size=2, stride=2)
-        else:
-            self.transform = nn.MaxPool2d(kernel_size=2, stride=2)
 
     def forward(self, x, scale_shift=None):
         x = self.conv1(x)
@@ -84,26 +85,42 @@ class Block(nn.Module):
 #             # print("decode[4]", x.shape)
 #         return x
 
+def rescale(x, in_bound, out_bound):
+    x = (x - in_bound[0])/(in_bound[1] - out_bound[0])
+    x = x * (out_bound[1] - out_bound[0]) + out_bound[0]
+    return x
 
-class UNetNoiseModel(nn.Module):
-    def __init__(self, nb_steps, nb_labels, chs=(64, 128, 256)) -> None:
-        super().__init__()
+
+def one_hot_encode(x, size):
+    x = x.long()
+    x = torch.zeros(x.size(0), size).to(device).scatter_(1, x, 1)
+    return x
+
+
+class UNetNoiseModel(BaseNoiseModel):
+    def __init__(self, forward_module, scheduler, chs=(64, 128, 256)) -> None:
+        super().__init__(forward_module, scheduler)
+        self.nb_steps = scheduler.nb_steps
+        self.nb_labels = 10
+
         emb_dim = 32
         down_chs = chs
         up_chs = chs[::-1]
 
         self.time_mlp = nn.Sequential(
-            LinearEmbedding(1, emb_dim, min_val=0, max_val=nb_steps-1),
+            nn.Linear(1, emb_dim),
+            nn.ReLU(),
             nn.Linear(emb_dim, emb_dim),
             nn.ReLU(),
         )
         self.label_mlp = nn.Sequential(
-            LinearEmbedding(nb_labels, emb_dim, min_val=0, max_val=1),
+            nn.Linear(self.nb_labels, emb_dim),
+            nn.ReLU(),
             nn.Linear(emb_dim, emb_dim),
             nn.ReLU(),
         )
 
-        self.conv0 = nn.Conv2d(3, chs[0], kernel_size=3, padding=1)
+        self.conv0 = nn.Conv2d(1, chs[0], kernel_size=3, padding=1)
 
         self.downs = nn.ModuleList([
             Block(down_chs[i], down_chs[i+1], emb_dim, up=False) for i in range(len(down_chs) - 1)
@@ -115,14 +132,16 @@ class UNetNoiseModel(nn.Module):
         self.output = nn.Conv2d(up_chs[-1], 1, kernel_size=1)
 
     def forward(self, x, time, label):
-        time = self.time_mlp(time)
-        label = self.label_mlp(label)
+        time = self.time_mlp(rescale(time, (0, self.nb_steps-1), (-1, 1)))
+        label = self.label_mlp(one_hot_encode(label, self.nb_labels))
+
+        x = self.conv0(x)
 
         residual_inputs = []
         for down in self.downs:
             x = down(x, (time, label))
             residual_inputs.append(x)
-        for up, res_input in zip(self.ups, residual_inputs):
+        for up, res_input in zip(self.ups, residual_inputs[::-1]):
             x = torch.cat([x, res_input], dim=1)
             x = up(x, (time, label))
 
