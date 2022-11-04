@@ -9,6 +9,28 @@ from ..constants import device
 from ..embeddings import LinearEmbedding
 
 
+def rescale(x, in_bound, out_bound):
+    x = (x - in_bound[0])/(in_bound[1] - out_bound[0])
+    x = x * (out_bound[1] - out_bound[0]) + out_bound[0]
+    return x
+
+
+def one_hot_encode(x, size):
+    x = x.long()
+    x = torch.zeros(x.size(0), size).to(device).scatter_(1, x, 1)
+    return x
+
+
+class ScalingSigmoid(nn.Module):
+    def __init__(self, min_val, max_val):
+        super().__init__()
+        self.min_val = min_val
+        self.max_val = max_val
+
+    def forward(self, x):
+        return rescale(torch.sigmoid(x), (0, 1), (self.min_val, self.max_val))
+
+
 class Block(nn.Module):
     def __init__(self, in_ch, out_ch) -> None:
         super().__init__()
@@ -74,16 +96,42 @@ class UNet(nn.Module):
 class UNetNoiseModel(BaseNoiseModel):
     def __init__(self, forward_module, scheduler, chs=(32, 64, 128)) -> None:
         super().__init__(forward_module, scheduler)
-        print("V17")
+        print("V18")
         self.nb_steps = scheduler.nb_steps
 
-        down_chs = [1, *chs]
+        down_chs = [2, *chs]
         up_chs = [*chs[::-1], 1]
         self.u_net = UNet(down_chs, up_chs).to(device)
 
+        self.time_embedding = nn.Sequential(
+            nn.Linear(1, 28*28),
+            nn.ReLU(),
+            nn.Linear(28*28, 28*28),
+            ScalingSigmoid(-1, 1)
+        ).to(device)
+
+        self.label_embedding = nn.Sequential(
+            nn.Linear(10, 28*28),
+            nn.ReLU(),
+            nn.Linear(28*28, 28*28),
+            ScalingSigmoid(-1, 1)
+        ).to(device)
+
     def forward(self, x, time, label):
+        b, h, w = x.shape
+
+        time = rearrange(time, 'b -> b 1')
+        time = rescale(time, (0, self.nb_steps-1), (-1, 1))
+        time = self.time_embedding(time)
+        time = rearrange(time, 'b (h w) -> b 1 h w', h=h, w=w)
+
+        label = rearrange(label, 'b -> b 1')
+        label = one_hot_encode(label, 10)
+        label = self.label_embedding(label)
+        label = rearrange(label, 'b (h w) -> b 1 h w', h=h, w=w)
+
         x = rearrange(x, "b h w -> b 1 h w")
-        x = self.u_net(x)
+        x = self.u_net(torch.cat([x, time], dim=1))
         x = rearrange(x, "b 1 h w -> b h w")
         return x
 
