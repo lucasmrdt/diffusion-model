@@ -5,6 +5,20 @@ from tqdm import tqdm
 
 from .constants import device
 
+def rescale(x, in_bound, out_bound):
+    x = (x - in_bound[0])/(in_bound[1] - out_bound[0])
+    x = x * (out_bound[1] - out_bound[0]) + out_bound[0]
+    return x
+
+
+class ScalingSigmoid(nn.Module):
+    def __init__(self, min_val, max_val):
+        super().__init__()
+        self.min_val = min_val
+        self.max_val = max_val
+
+    def forward(self, x):
+        return rescale(torch.sigmoid(x), (0, 1), (self.min_val, self.max_val))
 
 class SinusoidalEmbeddings(nn.Module):
     def __init__(self, dim):
@@ -42,10 +56,10 @@ class MLPEmbedding(nn.Module):
         self.loss_fn = nn.functional.binary_cross_entropy
         self.embedding = nn.Sequential(
             nn.Linear(input_dim, output_dim),
-            nn.Sigmoid(),
         ).to(device)
         self.nn = nn.Sequential(
             self.embedding,
+            nn.ReLU(),
             nn.Linear(output_dim, input_dim),
             nn.Softmax(dim=-1)
         ).to(device)
@@ -55,7 +69,7 @@ class MLPEmbedding(nn.Module):
             return self.nn(x)
         else:
             # return self.embedding(x)
-            return 2 * self.embedding(x) - 1  # [-1, 1]
+            return self.embedding(x)
 
     def fit(self, dataloader, nb_epochs=200):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
