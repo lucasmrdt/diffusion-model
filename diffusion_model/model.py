@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 from einops import rearrange
-from tqdm import trange
+from tqdm import tqdm
 
 from .scheduler import Scheduler
 from .forwarder import Forwarder
@@ -23,48 +23,56 @@ class Model(nn.Module):
 
         self.time_embedding = nn.Sequential(
             nn.Linear(1, 28*28),
+            nn.Unflatten(1, (28, 28)),
         ).to(device)
 
         self.label_embedding = nn.Sequential(
             nn.Linear(10, 28*28),
+            nn.Unflatten(1, (28, 28)),
         ).to(device)
 
     def forward(self, x, t, label):
-        b, h, w = x.shape
-
-        t = 2 * t / (self.sch.n_steps-1) - 1  # [-1, 1]
+        t = 2 * t / self.sch.n_steps - 1  # [-1, 1]
         t = self.time_embedding(t)
-        t = rearrange(t, 'b (h w) -> b 1 h w', h=h, w=w)
 
         label = self.label_embedding(label)
-        label = rearrange(label, 'b (h w) -> b 1 h w', h=h, w=w)
 
-        x = rearrange(x, "b h w -> b 1 h w")
-        x = self.u_net(torch.cat([x, t, label], dim=1))
-        x = rearrange(x, "b 1 h w -> b h w")
-        return x
+        x, t, label = x[:, None], t[:, None], label[:, None]
+
+        out = self.u_net(torch.cat([x, t, label], dim=1))
+        out = out.squeeze(1)
+        return out
+
+    def forward_one(self, x, t, label):
+        x, t, label = x[None], t[None], label[None]
+        out = self.forward(x, t, label)
+        return out.squeeze(0)
 
     def fit(self, dataloader, optimizer="adam", optimizer_kwargs={}, n_epochs=200, logger=None):
         optimizer = Optimizer(optimizer, self.parameters(), **optimizer_kwargs)
 
-        for epoch in trange(n_epochs, desc="Epoch"):
+        for epoch in range(n_epochs):
             losses = []
-            for step, (x, label) in enumerate(dataloader):
+            for step, (x, label) in tqdm(enumerate(dataloader), desc=f"Epoch {epoch}", total=len(dataloader)):
                 optimizer.zero_grad()
 
                 batch_size = x.shape[0]
 
-                t = torch.randint(0, self.sch.n_steps, (batch_size, 1))
+                t = torch.randint(1, self.sch.n_steps+1, (batch_size, 1))
                 t = t.to(device)
-                x_noisy, noise = self.fwd.forward(x, t)
 
-                noise_pred = self.forward(x_noisy, t, label)
+                x_noisy, _ = self.fwd.forward(x, t)
+                x_prev, _ = self.fwd.forward(x, t-1)
 
-                loss = torch.nn.functional.mse_loss(noise_pred, noise)
+                x_pred = self.forward(x_noisy, t, label)
+
+                # print(x_pred.shape, x_prev.shape)
+
+                loss = torch.nn.functional.mse_loss(x_prev, x_pred)
                 losses.append(loss.item())
 
                 loss.backward()
                 optimizer.step()
 
-            if epoch % (n_epochs // 10) == 0 and logger:
+            if epoch % 10 == 0 and logger:
                 logger(epoch, losses)

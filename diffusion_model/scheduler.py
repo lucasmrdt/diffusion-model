@@ -38,6 +38,8 @@ class Scheduler:
         else:
             raise ValueError(f"Unknown schedule_type {schedule_type}")
 
+        beta0 = torch.Tensor([0]).to(device)
+        betas = torch.cat([beta0, betas])
         betas = betas.clamp(0, max_beta)
         betas = rearrange(betas, "t -> t 1")
 

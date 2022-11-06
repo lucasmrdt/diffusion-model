@@ -25,19 +25,19 @@ class Backwarder:
         return sigmas
 
     def backward(self, xt, t, label):
-        z = (torch.randn_like(xt) if t > 0 else torch.zeros_like(xt)).to(device)
+        z = (torch.randn_like(xt) if t > -1 else torch.zeros_like(xt)).to(device)
         b = xt.shape[0]
         t = torch.full((b, 1), t).to(device)
         noise_pred = self.model(xt, t, label)
-        return 1/self.sch.sqrt_alpha[t] * (xt - noise_pred*self.sch.betas[t]/self.sch.sqrt_one_minus_alphas_bar[t]) + self.sig[t]*z
+        # return 1/self.sch.sqrt_alpha[t] * (xt - noise_pred*self.sch.betas[t]/self.sch.sqrt_one_minus_alphas_bar[t]) + self.sig[t]*z
+        return noise_pred + self.sig[t]*z
 
     def backward_loop(self, label, shape, n_disp_steps=10):
-        xt = torch.randn((1, *shape)).to(device)
-        t_space = torch.linspace(0, self.sch.n_steps-1, n_disp_steps-1).long()
+        xt = torch.randn(shape).to(device)
+        t_space = torch.linspace(self.sch.n_steps, 0, n_disp_steps-1).long()
 
         x_by_t = [xt.detach().cpu()]
         for t in tqdm(t_space, desc="Backwarding"):
             xt = self.backward(xt, t, label)
             x_by_t.append(xt.detach().cpu())
-        x_by_t = rearrange(x_by_t, "t 1 h w -> t h w")
         return x_by_t
