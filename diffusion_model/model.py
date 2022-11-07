@@ -23,11 +23,13 @@ class Model(nn.Module):
 
         self.time_embedding = nn.Sequential(
             nn.Linear(1, 28*28),
+            nn.ReLU(),
             nn.Unflatten(1, (28, 28)),
         ).to(device)
 
         self.label_embedding = nn.Sequential(
             nn.Linear(10, 28*28),
+            nn.ReLU(),
             nn.Unflatten(1, (28, 28)),
         ).to(device)
 
@@ -61,14 +63,11 @@ class Model(nn.Module):
                 t = torch.randint(1, self.sch.n_steps+1, (batch_size, 1))
                 t = t.to(device)
 
-                x_noisy, _ = self.fwd.forward(x, t)
-                x_prev, _ = self.fwd.forward(x, t-1)
+                x_noisy, noise = self.fwd.forward(x, t)
 
-                x_pred = self.forward(x_noisy, t, label)
+                noise_pred = self.forward(x_noisy, t, label)
 
-                # print(x_pred.shape, x_prev.shape)
-
-                loss = torch.nn.functional.mse_loss(x_prev, x_pred)
+                loss = torch.nn.functional.mse_loss(noise, noise_pred)
                 losses.append(loss.item())
 
                 loss.backward()

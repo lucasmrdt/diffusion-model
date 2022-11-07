@@ -57,7 +57,8 @@ class UNet(nn.Module):
         super().__init__()
         self.encoder = Encoder(down_chs)
         self.decoder = Decoder(up_chs[:-1])
-        self.head = nn.Conv2d(up_chs[-2], up_chs[-1], kernel_size=1)
+        self.head = nn.Conv2d(
+            up_chs[-2], up_chs[-1], kernel_size=3, padding="same")
 
     def forward(self, x):
         x, residuals = self.encoder(x)
