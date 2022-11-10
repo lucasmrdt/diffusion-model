@@ -49,8 +49,7 @@ class Model(nn.Module):
         batch_size = X.shape[0]
         t = torch.randint(1, self.sch.n_steps+1, (batch_size, 1))
 
-        label = torch.zeros((label.shape[0], 10))
-        label = label.scatter_(1, label.long().unsqueeze(1), 1)
+        label = nn.functional.one_hot(label, 10).float()
 
         X, label, t = X.to(device), label.to(device), t.to(device)
 
