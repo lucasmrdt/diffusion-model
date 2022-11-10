@@ -1,17 +1,27 @@
+#!/usr/bin/env python3
+
 import torch
 import numpy as np
 import os
-from tqdm import tqdm, trange
 import argparse
+import json
+import time
+from tqdm import tqdm, trange
 
 from diffusion_model import Model, Loss, Forwarder, Optimizer, Scheduler, get_mnist_dataset, MODELS_DIR, device
 
 
 def save_model(model, loss, args):
+    metadata = json.load(open(os.path.join(MODELS_DIR, "metadata.json")))
+    model_id = str(round(time.time()))
+    metadata[model_id] = {
+        "args": vars(args),
+        "loss": loss,
+        "time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+    }
+    json.dump(metadata, open(os.path.join(MODELS_DIR, "metadata.json"), "w"))
     state = {'model_state_dict': model.state_dict()}
-    str_args = ",".join([f'{k}={v}' for k, v in vars(args).items()])
-    name = f"score={loss} ({str_args}).pth"
-    torch.save(state, os.path.join(MODELS_DIR, name))
+    torch.save(state, os.path.join(MODELS_DIR, f"{model_id}.pt"))
 
 
 if __name__ == '__main__':
