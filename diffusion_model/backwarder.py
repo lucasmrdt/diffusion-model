@@ -28,17 +28,20 @@ class Backwarder:
         z = (torch.randn_like(xt) if t > 1 else torch.zeros_like(xt)).to(device)
         b = xt.shape[0]
         t = torch.full((b, 1), t).to(device)
-        noise_pred = self.model(xt, t, label)
-        return 1/self.sch.sqrt_alpha[t] * (xt - noise_pred*(1 - self.sch.alphas[t])/self.sch.sqrt_one_minus_alphas_bar[t]) + self.sig[t]*z
-        # return noise_pred + self.sig[t]*z
+        mean = self.model(xt, t, label)
+        # return 1/self.sch.sqrt_alpha[t] * (xt - noise_pred*(1 - self.sch.alphas[t])/self.sch.sqrt_one_minus_alphas_bar[t]) + self.sig[t]*z
+        return mean + self.sig[t]*z
+        # return mean
 
-    def backward_loop(self, label, shape, n_disp_steps=10):
+    def backward_loop(self, label, shape, n_disp_steps=10, progress_bar=True):
         xt = torch.randn(shape).to(device)
         # t_space = torch.linspace(self.sch.n_steps, 1, n_disp_steps-1).long()
         t_space = torch.arange(self.sch.n_steps, 0, -1).long()
+        if progress_bar:
+          t_space = tqdm(t_space, desc="Backwarding")
 
         x_by_t = [xt.detach().cpu()]
-        for t in tqdm(t_space, desc="Backwarding"):
+        for t in t_space:
             xt = self.backward(xt, t, label)
             x_by_t.append(xt.detach().cpu())
         return x_by_t
