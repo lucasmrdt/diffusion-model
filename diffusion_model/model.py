@@ -19,27 +19,25 @@ class Model(nn.Module):
 
         down_chs = [3, *chs]
         up_chs = [*chs[::-1], 1]
-        self.u_net = UNet(down_chs, up_chs).to(device)
+        self.u_net = UNet(down_chs, up_chs)
 
         self.time_embedding = nn.Sequential(
             nn.Linear(1, 32*32),
             nn.ReLU(),
             nn.Unflatten(1, (32, 32)),
-        ).to(device)
+        )
 
         self.label_embedding = nn.Sequential(
             nn.Linear(10, 32*32),
             nn.ReLU(),
             nn.Unflatten(1, (32, 32)),
-        ).to(device)
+        )
 
     def forward(self, X, t, label):
         t = 2 * t / self.sch.n_steps - 1  # [-1, 1]
         t = self.time_embedding(t)
         t = t[:, None]
 
-        label = torch.zeros((label.shape[0], 10)).scatter_(
-            1, label.unsqueeze(1), 1)
         label = self.label_embedding(label)
         label = label[:, None]
 
@@ -50,6 +48,9 @@ class Model(nn.Module):
     def _one_step(self, loss_fn: Loss, X, label):
         batch_size = X.shape[0]
         t = torch.randint(1, self.sch.n_steps+1, (batch_size, 1))
+
+        label = torch.zeros((label.shape[0], 10))
+        label = label.scatter_(1, label.unsqueeze(1), 1)
 
         X, label, t = X.to(device), label.to(device), t.to(device)
 
