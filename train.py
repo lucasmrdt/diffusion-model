@@ -9,15 +9,13 @@ from diffusion_model import Model, Loss, Forwarder, Optimizer, Scheduler, get_mn
 
 def save_model(model, loss, args):
     state = {'model_state_dict': model.state_dict()}
-    str_args = ",".join([f'{k}={v}' for k, v in args.items()])
+    str_args = ",".join([f'{k}={v}' for k, v in vars(args).items()])
     name = f"score={loss} ({str_args}).pth"
     torch.save(state, os.path.join(MODELS_DIR, name))
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Train Normalizing Flow.')
-    # parser.add_argument("--batch_size", type=int, default=256,
-    #                     help="The batch size to use for training.")
     # parser.add_argument("--optimizer", type=str, default='adam',
     #                     help="Optimizer to use for training.")
     # parser.add_argument("--gamma", type=float, default=0.5,
@@ -60,12 +58,14 @@ if __name__ == '__main__':
                         help="Learning rate.")
     parser.add_argument("--epochs", type=int, default=500,
                         help="Number of epochs for training.")
+    parser.add_argument("--batch_size", type=int, default=256,
+                        help="The batch size to use for training.")
 
     args = parser.parse_args()
 
     # Data Pipeline
     print('Dataset loading...')
-    dataset = get_mnist_dataset(args.normalize_range)
+    dataset = get_mnist_dataset(args.normalize_range, args.batch_size)
     train_loader, test_loader = dataset
     print('Dataset Loaded.')
 
