@@ -50,7 +50,7 @@ class Model(nn.Module):
         t = torch.randint(1, self.sch.n_steps+1, (batch_size, 1))
 
         label = torch.zeros((label.shape[0], 10))
-        label = label.scatter_(1, label.unsqueeze(1), 1)
+        label = label.scatter_(1, label.long().unsqueeze(1), 1)
 
         X, label, t = X.to(device), label.to(device), t.to(device)
 
