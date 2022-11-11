@@ -1,13 +1,20 @@
 {
   "957bbf4d6e4531ec868555de8e33b7fd3328a670": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 500,
@@ -18,13 +25,20 @@
   },
   "0508738cca74f57435637f2d0dd9593fd5460042": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 50,
@@ -32,5 +46,437 @@
     },
     "loss": 0.005559679388534277,
     "time": "2022-11-10 16:56:26"
+  },
+  "8ffff24b6afcc37994e65cc01f20db8bc2fb24ac": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 500,
+      "batch_size": 32
+    },
+    "loss": 0.009509770712925317,
+    "time": "2022-11-11 13:37:54"
+  },
+  "11edae5cbe92f2f6425f2d5e6e7b3e3a93ab44cf": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 25,
+      "batch_size": 32
+    },
+    "loss": 0.005426396616547109,
+    "time": "2022-11-11 13:58:12"
+  },
+  "2afa0a56a4688caf0f2884d0e894abc6fb2c4cb2": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 25,
+      "batch_size": 64
+    },
+    "loss": 0.006898881722194184,
+    "time": "2022-11-11 13:44:50"
+  },
+  "81afcb98807a1eafc00000d9826746503592ca99": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 25,
+      "batch_size": 128
+    },
+    "loss": 0.008588886861041,
+    "time": "2022-11-11 13:45:02"
+  },
+  "19c7df29a63357fcda60c018dc95e4865b70eeaf": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 25,
+      "batch_size": 256
+    },
+    "loss": 0.009487360948696733,
+    "time": "2022-11-11 13:45:08"
+  },
+  "6affbfb62fef8ceb96e1a7621d5014aa07e0e172": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 25,
+      "batch_size": 512
+    },
+    "loss": 0.013289434975013137,
+    "time": "2022-11-11 13:45:08"
+  },
+  "cff9e2dd6d43c2d518e6c2ece4f02ba98c6fb815": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 25,
+      "batch_size": 1024
+    },
+    "loss": 0.019459873251616955,
+    "time": "2022-11-11 13:45:19"
+  },
+  "16602e437202951acb8671b85096b338ebda8cde": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 500,
+      "batch_size": 256
+    },
+    "loss": 0.016756659070961178,
+    "time": "2022-11-11 14:04:35"
+  },
+  "e5bcd70eb1b405f75f251414a285a52be1c0b8c7": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 50,
+      "batch_size": 2048
+    },
+    "loss": 0.0069851276464760305,
+    "time": "2022-11-11 14:17:35"
+  },
+  "094b9bbcf3bfaccaf022cc07ba4693d14172f1a8": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 50,
+      "batch_size": 1024
+    },
+    "loss": 0.006294458080083132,
+    "time": "2022-11-11 14:18:51"
+  },
+  "838c1428a245e3b194907cc53c2e262459abb886": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 50,
+      "batch_size": 512
+    },
+    "loss": 0.0062940640607848765,
+    "time": "2022-11-11 14:15:11"
+  },
+  "45ee082b43d383745b2c3ade9a6fc66b6beabf68": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 50,
+      "batch_size": 256
+    },
+    "loss": 0.005550482589751482,
+    "time": "2022-11-11 14:24:08"
+  },
+  "46593e02cbbb590d0a91b6278cc8d02b7dbc1d60": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 50,
+      "batch_size": 128
+    },
+    "loss": 0.005367439732403506,
+    "time": "2022-11-11 14:31:29"
+  },
+  "c4aa06b1b88fac155467d72136dbb1bd574b02df": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 50,
+      "batch_size": 64
+    },
+    "loss": 0.005195615175447077,
+    "time": "2022-11-11 14:39:56"
+  },
+  "9965e625f6a0151908fa813ca096e493fc17223c": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 50,
+      "batch_size": 32
+    },
+    "loss": 0.005336475902617858,
+    "time": "2022-11-11 15:05:35"
+  },
+  "a3f2e8d0c21d8294462b26fbb7d97ffa16d93e64": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "epsilon-l1",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 100,
+      "batch_size": 512
+    },
+    "loss": 0.24555389881134032,
+    "time": "2022-11-11 17:28:34"
+  },
+  "a4cc1d60186c2515f9568a7674750c827d1563c2": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 100,
+      "batch_size": 512
+    },
+    "loss": 0.03874701503664255,
+    "time": "2022-11-11 17:28:34"
+  },
+  "d4befc659bb9d849b17af3f336bc5096a17fc868": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l1",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 100,
+      "batch_size": 512
+    },
+    "loss": 0.14000049903988837,
+    "time": "2022-11-11 17:28:34"
   }
 }

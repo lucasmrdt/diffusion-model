@@ -12,4 +12,4 @@ class ModelGetter:
         if model == "unet_v1":
             return Model_UNet_V1
         else:
-            raise ValueError(f"Unknown model: {self.model}")
+            raise ValueError(f"Unknown model: {model}")

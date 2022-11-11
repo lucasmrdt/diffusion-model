@@ -3,12 +3,37 @@
 from diffusion_model import ModelGetter, LossGetter, OptimizerGetter, Forwarder, Scheduler, get_mnist_dataset, MODELS_DIR, device
 from tqdm.auto import tqdm, trange
 import torch
+import torch.nn as nn
 import numpy as np
 import os
 import argparse
 import json
 import time
 from hashlib import sha1
+
+
+def one_step(sch, fwd, model, loss_fn, X, label):
+    batch_size = X.shape[0]
+    t = torch.randint(1, sch.n_steps+1, (batch_size, 1))
+
+    X, label, t = X.to(device), label.to(device), t.to(device)
+
+    x_noisy, noise = fwd.forward(X, t)  # noise image using random time step
+    model_pred = model(x_noisy, t, label)  # predict image using model
+
+    return loss_fn(t, x_noisy, noise, model_pred)  # return loss
+
+
+def one_step_eval(sch, fwd, model, loss_fn, X, label):
+    return one_step(sch, fwd, model, loss_fn, X, label).item()
+
+
+def one_step_training(sch, fwd, opt, model, loss_fn, X, label):
+    opt.zero_grad()
+    loss = one_step(sch, fwd, model, loss_fn, X, label)
+    loss.backward()
+    opt.step()
+    return loss.item()
 
 
 def save_model(model, loss, args):
@@ -19,7 +44,8 @@ def save_model(model, loss, args):
         "loss": loss,
         "time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
     }
-    json.dump(metadata, open(os.path.join(MODELS_DIR, "metadata.json"), "w"))
+    json.dump(metadata, open(os.path.join(
+        MODELS_DIR, "metadata.json"), "w"), indent=2)
     state = {"model_state_dict": model.state_dict()}
     torch.save(state, os.path.join(MODELS_DIR, f"{model_id}.pt"))
 
@@ -69,7 +95,7 @@ if __name__ == "__main__":
 
     Model = ModelGetter.get_model(args.model)
     model = Model(sch, fwd, chs=args.channels).to(device)
-    # model = DataParallel(model).cuda()
+    model = nn.DataParallel(model).cuda()
 
     Optimizer = OptimizerGetter.get_optimizer(args.optimizer)
     opt = Optimizer(model.parameters(), lr=args.lr)
@@ -77,19 +103,22 @@ if __name__ == "__main__":
 
     print("Start Training :")
     best_loss = np.inf
-    with trange(args.epochs, desc="Epoch", unit="epoch", position=0) as te:
+    with trange(args.epochs, desc="Epoch", unit="epoch", ascii=True) as te:
         for epoch in te:
             model.train()
-            with tqdm(train_loader, desc="Training", unit="batch", leave=False) as bt:
+            with tqdm(train_loader, desc="Training", unit="batch", leave=False, ascii=True) as bt:
                 for (X, label) in bt:
-                    loss = model.one_step_training(opt, loss_fn, X, label)
+                    loss = one_step_training(
+                        sch, fwd, opt, model, loss_fn, X, label)
                     bt.set_postfix(loss=loss)
 
             model.eval()
             losses = []
-            with tqdm(test_loader, desc="Evaluation",  leave=False) as be:
+            with tqdm(test_loader, desc="Evaluation", leave=False, ascii=True) as be:
                 for (inputs, label) in be:
-                    losses.append(model.one_step_eval(loss_fn, inputs, label))
+                    loss = one_step_eval(
+                        sch, fwd, model, loss_fn, inputs, label)
+                    losses.append(loss)
                     be.set_postfix(loss_eval=sum(losses)/len(losses))
 
             loss_eval = sum(losses)/len(losses)

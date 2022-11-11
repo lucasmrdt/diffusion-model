@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import torch
+import torch.nn as nn
 import torchvision
 import os
 import json
@@ -52,9 +53,9 @@ if __name__ == "__main__":
 
     Model = ModelGetter.get_model(model_args["model"])
     model = Model(sch, fwd,
-                  **dict_without_keys(model_args, ["scheduler"])).to(device)
+                  **dict_without_keys(model_args, ["scheduler"]))
+    model = nn.DataParallel(model).cuda()
     model.load_state_dict(model_state)
-    # model = DataParallel(model).cuda()
 
     bkw = Backwarder(sch, model,
                      is_predicting_noise=Loss.is_predicting_noise(), sigma=args.sigma)
@@ -67,8 +68,9 @@ if __name__ == "__main__":
     x = bkw.sample(args.n_samples, (32, 32))
     x = x[:, :, 2:30, 2:30]  # remove padding
     if args.grid:
-        torchvision.utils.save_image(
-            x, "samples/grid.png", nrow=np.sqrt(args.n_samples).astype(int))
+        file_name = f"{args.model_id}.png" if args.model_id else "grid.png"
+        torchvision.utils.save_image(x, os.path.join("samples", file_name),
+                                     nrow=np.sqrt(args.n_samples).astype(int))
     else:
         for i in trange(args.n_samples, desc="Saving"):
             torchvision.utils.save_image(x[i, 0, :, :], f"samples/{i}.png")
