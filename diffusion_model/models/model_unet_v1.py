@@ -1,7 +1,10 @@
-# inspired from https://amaarora.github.io/2020/09/13/unet.html, https://colab.research.google.com/drive/1sjy9odlSSy0RBVgMTgP7s99NXsqglsUL?usp=sharing#scrollTo=LQnlc27k7Aiw and https://huggingface.co/blog/annotated-diffusion
-
 import torch
 from torch import nn
+
+from ..scheduler import Scheduler
+from ..forwarder import Forwarder
+from ..loss import Loss
+from ..constants import device
 
 
 class Block(nn.Module):
@@ -65,3 +68,64 @@ class UNet(nn.Module):
         x = self.decoder(x, residuals)
         x = self.head(x)
         return x
+
+
+class Model_UNet_V1(nn.Module):
+    def __init__(self, scheduler: Scheduler, forwarder: Forwarder, chs=(32, 64, 128), *_, **__) -> None:
+        super().__init__()
+
+        self.sch = scheduler
+        self.fwd = forwarder
+
+        down_chs = [3, *chs]
+        up_chs = [*chs[::-1], 1]
+        self.u_net = UNet(down_chs, up_chs)
+
+        self.time_embedding = nn.Sequential(
+            nn.Linear(1, 32*32),
+            nn.ReLU(),
+            nn.Unflatten(1, (32, 32)),
+        )
+
+        self.label_embedding = nn.Sequential(
+            nn.Linear(10, 32*32),
+            nn.ReLU(),
+            nn.Unflatten(1, (32, 32)),
+        )
+
+    def forward(self, X, t, label):
+        t = 2 * t / self.sch.n_steps - 1  # [-1, 1]
+        t = self.time_embedding(t)
+        t = t[:, None]
+
+        label = nn.functional.one_hot(label, 10).float().to(device)
+        label = self.label_embedding(label)
+        label = label[:, None]
+
+        input = torch.cat([X, label, t], dim=1)
+        out = self.u_net(input)
+        return out
+
+    def _one_step(self, loss_fn: Loss, X, label):
+        batch_size = X.shape[0]
+        t = torch.randint(1, self.sch.n_steps+1, (batch_size, 1))
+
+        X, label, t = X.to(device), label.to(device), t.to(device)
+
+        x_noisy, noise = self.fwd.forward(X, t)
+        model_pred = self.forward(x_noisy, t, label)
+
+        return loss_fn(t, x_noisy, noise, model_pred)
+
+    def one_step_eval(self, loss_fn: Loss, X, label):
+        loss = self._one_step(loss_fn, X, label)
+        return loss.item()
+
+    def one_step_training(self, optimizer: torch.optim.Optimizer, loss_fn: Loss, X, label):
+        optimizer.zero_grad()
+
+        loss = self._one_step(loss_fn, X, label)
+        loss.backward()
+        optimizer.step()
+
+        return loss.item()

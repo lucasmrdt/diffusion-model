@@ -16,11 +16,6 @@ class Forwarder:
         xt = mean + var
         return xt, noise
 
-    def forward_one(self, x0, t):
-        x0 = x0[None]
-        xt, noise = self.forward(x0, t)
-        return xt.squeeze(0), noise.squeeze(0)
-
     def forward_loop(self, x0, n_disp_steps=10):
         x_by_t = []
         t_space = torch.linspace(0, self.sch.n_steps, n_disp_steps-1)

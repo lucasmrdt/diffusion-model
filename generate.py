@@ -1,64 +1,74 @@
+#!/usr/bin/env python3
+
 import torch
 import torchvision
-import numpy as np
 import os
-from tqdm import trange
+import json
 import argparse
+import numpy as np
+from tqdm import trange
 
 
-from model import Glow
+from diffusion_model import ModelGetter, LossGetter, Forwarder, Backwarder, Scheduler, MODELS_DIR, device
 
 
-def load_model(model):
-    state = torch.load(os.path.join('checkpoint', 'bestmodel.pth'))
-    model.load_state_dict(state['model_state_dict'])
-    return model
+def get_model_info(model_id=None):
+    metadata = json.load(open(os.path.join(MODELS_DIR, "metadata.json")))
+    if not model_id in metadata:
+        print("No model_id provided, using best model...")
+        model_id = max(metadata, key=lambda k: metadata[k]["loss"])
+        print(f"Using: {model_id}")
+    model_args = metadata[model_id]["args"]
+    model_path = os.path.join(MODELS_DIR, f"{model_id}.pt")
+    state = torch.load(model_path,  map_location=device)
+    return state["model_state_dict"], model_args
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Generate Normalizing Flow.')
-    parser.add_argument("--batch_size", type=int, default=256,
-                        help="The batch size to use for training.")
-    parser.add_argument("--num_channels", type=int, default=16,
-                        help="Number of channels to use in the model.")
-    parser.add_argument("--num_features", type=int, default=256)
-    parser.add_argument("--num_steps", type=int, default=5,
-                        help="Depth of the model.")
-    parser.add_argument("--batchnorm", default=False, action='store_false')
-    parser.add_argument("--actnorm", default=True, action='store_true')
-    parser.add_argument("--activation", type=str, default='relu')
+def dict_without_keys(d, keys):
+    return {k: v for k, v in d.items() if k not in keys}
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Generate Diffusion Model.")
+    parser.add_argument("--model_id", type=str,
+                        help="Model ID to use for generation.")
+    parser.add_argument("--sigma", choices=Backwarder.sigma_valid_choices,
+                        default=Backwarder.sigma_default, help="Sigma to use for generation.")
     parser.add_argument("--n_samples", type=int, default=1024,
-                        help="Number of generated samples.")
-
+                        help="Number of samples to generate.")
+    parser.add_argument("--grid", action='store_true', default=False,
+                        help="Whether to generate a grid of samples.")
     args = parser.parse_args()
 
-    # Data Pipeline
-    print('Dataset loading...')
-    x_dim = (1, 32, 32)
-    args.num_levels = int(np.log2(x_dim[1]))-1
-    print('Dataset Loaded.')
+    print("Model Loading...")
+    model_state, model_args = get_model_info(args.model_id)
 
-    print('Model Loading...')
-    # Model Pipeline
-    model = Glow(in_channels=1,
-                 num_channels=args.num_channels,
-                 num_levels=args.num_levels,
-                 num_steps=args.num_steps,
-                 params=args).cuda()
-    model = load_model(model)
-    model.eval()
+    sch = Scheduler(model_args["n_steps"], model_args["scheduler"],
+                    max_beta=model_args["max_beta"])
+
+    Loss = LossGetter.get_loss(model_args["loss"])
+
+    fwd = Forwarder(sch)
+
+    Model = ModelGetter.get_model(model_args["model"])
+    model = Model(sch, fwd,
+                  **dict_without_keys(model_args, ["scheduler"])).to(device)
+    model.load_state_dict(model_state)
     # model = DataParallel(model).cuda()
-    print('Model loaded.')
 
-    print('Start Generating :')
-    os.makedirs('samples', exist_ok=True)
-    with trange(1024, desc="Generated", unit="img") as te:
-        for idx in te:
-            sample = torch.randn(1,
-                                 x_dim[1]*x_dim[2],
-                                 1,
-                                 1).cuda()
-            x, _ = model(sample, None, True)
-            x = x[:, :, 2:30, 2:30]
-            torchvision.utils.save_image(
-                x, os.path.join('samples', f'{idx}.png'))
+    bkw = Backwarder(sch, model,
+                     is_predicting_noise=Loss.is_predicting_noise(), sigma=args.sigma)
+    print("Model loaded.")
+
+    model.eval()
+    print("Start Generating :")
+    os.makedirs("samples", exist_ok=True)
+
+    x = bkw.sample(args.n_samples, (32, 32))
+    x = x[:, :, 2:30, 2:30]  # remove padding
+    if args.grid:
+        torchvision.utils.save_image(
+            x, "samples/grid.png", nrow=np.sqrt(args.n_samples).astype(int))
+    else:
+        for i in trange(args.n_samples, desc="Saving"):
+            torchvision.utils.save_image(x[i, 0, :, :], f"samples/{i}.png")
