@@ -44,12 +44,10 @@ class Loss:
                 mu_tilde = self.get_mu_tilde(sch, t, x_noisy, noise)
                 return nn.functional.l1_loss(mu_tilde, model_pred)
             elif self.loss == "x-prev-l2":
-                x = self.get_x_without_noise(
-                    sch, t, x_noisy, noise, model_pred)
+                x = self.get_x_without_noise(sch, t, x_noisy, noise)
                 return nn.functional.mse_loss(x, model_pred)
             elif self.loss == "x-prev-l1":
-                x = self.get_x_without_noise(
-                    sch, t, x_noisy, noise, model_pred)
+                x = self.get_x_without_noise(sch, t, x_noisy, noise)
                 return nn.functional.l1_loss(x, model_pred)
             elif self.loss == "epsilon-l2":
                 return nn.functional.mse_loss(noise, model_pred)
