@@ -31,7 +31,7 @@ def dict_without_keys(d, keys):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate Diffusion Model.")
-    parser.add_argument("--model_id", type=str,
+    parser.add_argument("--model_id", type=str, default="058c3c3806a6b75e6744bc39de97da0ca372abbd",
                         help="Model ID to use for generation.")
     parser.add_argument("--sigma", choices=Backwarder.sigma_valid_choices,
                         default=Backwarder.sigma_default, help="Sigma to use for generation.")

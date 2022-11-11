@@ -428,8 +428,8 @@
       "epochs": 100,
       "batch_size": 512
     },
-    "loss": 0.08833788745105267,
-    "time": "2022-11-11 17:37:15"
+    "loss": 0.07093719989061356,
+    "time": "2022-11-11 17:54:03"
   },
   "a4cc1d60186c2515f9568a7674750c827d1563c2": {
     "args": {
@@ -476,8 +476,8 @@
       "epochs": 100,
       "batch_size": 512
     },
-    "loss": 0.027811551094055177,
-    "time": "2022-11-11 17:37:08"
+    "loss": 0.0230987261980772,
+    "time": "2022-11-11 17:54:21"
   },
   "87bfd878156a202f2752b3e89b5173e67513806a": {
     "args": {
@@ -500,7 +500,55 @@
       "epochs": 100,
       "batch_size": 512
     },
-    "loss": 0.04137163329869509,
-    "time": "2022-11-11 17:38:23"
+    "loss": 0.04009213726967573,
+    "time": "2022-11-11 17:39:46"
+  },
+  "058c3c3806a6b75e6744bc39de97da0ca372abbd": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 100,
+      "batch_size": 512
+    },
+    "loss": 0.007500297506339848,
+    "time": "2022-11-11 18:04:33"
+  },
+  "4a5ba14ed27425fb0047d1690de78b851dfe821a": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l1",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 100,
+      "batch_size": 512
+    },
+    "loss": 0.027398057840764524,
+    "time": "2022-11-11 18:02:34"
   }
 }
