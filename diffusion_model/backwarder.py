@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 from tqdm import tqdm
-from einops import rearrange
 
 from .scheduler import Scheduler
 from .constants import device
