@@ -6,6 +6,9 @@ from .scheduler import Scheduler
 
 
 class Forwarder:
+    """
+    ## Fonction de bruitage
+    """
     def __init__(self, scheduler: Scheduler):
         self.sch = scheduler
 
