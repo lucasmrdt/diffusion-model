@@ -110,7 +110,6 @@ class UNet(nn.Module):
     def __init__(self, down_chs, up_chs, mid_attn: bool = False):
         super().__init__()
         self.encoder = Encoder(down_chs)
-        self.mid_attn = mid_attn
         if mid_attn:
             self.attn = MultiHeadAttentionBlock(
                 1, 32//(2**len(down_chs-1)), 32//(2**len(down_chs-1)))
@@ -120,8 +119,8 @@ class UNet(nn.Module):
 
     def forward(self, x):
         x, residuals = self.encoder(x)
-        if self.mid_attn:
-            x = self.attn(x, x, x, reshape=x.shape)
+        if self.attn is not None:
+            x = slef.attn(x, x, x, reshape=x.shape)
         x = self.decoder(x, residuals)
         x = self.head(x)
         return x
@@ -143,7 +142,6 @@ class Model_UNet_V1(nn.Module):
 
         self.sch = scheduler
         self.fwd = forwarder
-        self.time_attn = time_attn
 
         down_chs = [3, *chs]
         up_chs = [*chs[::-1], 1]
@@ -174,7 +172,7 @@ class Model_UNet_V1(nn.Module):
         label = self.label_embedding(label)
         label = label[:, None]
 
-        if self.time_attn:
+        if self.time_attn is not None:
             X = self.time_attention(t, X, X)
         input = torch.cat([X, label, t], dim=1)
 
