@@ -550,5 +550,53 @@
     },
     "loss": 0.027398057840764524,
     "time": "2022-11-11 18:02:34"
+  },
+  "0990623cddd911a710bbc398e040718fe6dfb584": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l1",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 1000,
+      "batch_size": 512
+    },
+    "loss": 0.019082143995910884,
+    "time": "2022-11-11 22:00:00"
+  },
+  "09593b8aa5cc97196cbe3d9f33ca8da9a60d2423": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 1000,
+      "batch_size": 512
+    },
+    "loss": 0.006981033203192055,
+    "time": "2022-11-11 22:20:55"
   }
 }

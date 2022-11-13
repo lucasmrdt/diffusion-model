@@ -19,6 +19,8 @@ def get_model_info(model_id=None):
         print("No model_id provided, using best model...")
         model_id = max(metadata, key=lambda k: metadata[k]["loss"])
         print(f"Using: {model_id}")
+    else:
+        print(f"Using: {model_id}")
     model_args = metadata[model_id]["args"]
     model_path = os.path.join(MODELS_DIR, f"{model_id}.pt")
     state = torch.load(model_path,  map_location=device)
@@ -31,7 +33,7 @@ def dict_without_keys(d, keys):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate Diffusion Model.")
-    parser.add_argument("--model_id", type=str, default="058c3c3806a6b75e6744bc39de97da0ca372abbd",
+    parser.add_argument("--model_id", type=str, default="09593b8aa5cc97196cbe3d9f33ca8da9a60d2423",
                         help="Model ID to use for generation.")
     parser.add_argument("--sigma", choices=Backwarder.sigma_valid_choices,
                         default=Backwarder.sigma_default, help="Sigma to use for generation.")
@@ -54,7 +56,7 @@ if __name__ == "__main__":
     Model = ModelGetter.get_model(model_args["model"])
     model = Model(sch, fwd,
                   **dict_without_keys(model_args, ["scheduler"]))
-    model = nn.DataParallel(model).cuda()
+    model = nn.DataParallel(model).to(device)
     model.load_state_dict(model_state)
 
     bkw = Backwarder(sch, model,
