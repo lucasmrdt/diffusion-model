@@ -598,5 +598,150 @@
     },
     "loss": 0.006981033203192055,
     "time": "2022-11-11 22:20:55"
+  },
+  "17d2a1ea86a08e4bb547f304550db43b73709075": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 1000,
+      "batch_size": 512
+    },
+    "loss": 0.005058510415256024,
+    "time": "2022-11-14 19:11:17"
+  },
+  "b48ea8d368fdb63bc890dd87361c47416c66428e": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        64,
+        128,
+        256
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 1000,
+      "batch_size": 512
+    },
+    "loss": 0.005408240109682083,
+    "time": "2022-11-14 19:52:29"
+  },
+  "f6e20eee8a2702b174acd04bf0b7fd62b59eb135": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 1000,
+      "batch_size": 512
+    },
+    "loss": 0.00495219356380403,
+    "time": "2022-11-14 18:56:28"
+  },
+  "2d607f706655d1d33ae01716c791c51187977592": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 20,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 200,
+      "batch_size": 512
+    },
+    "loss": 0.008088800497353077,
+    "time": "2022-11-15 12:21:04"
+  },
+  "88e65db88b28ba1f547f34d0187f22b69f9d9592": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 50,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 200,
+      "batch_size": 512
+    },
+    "loss": 0.007486717775464058,
+    "time": "2022-11-15 12:21:04"
+  },
+  "cfbfe84ac9872f0b57da128ce3700d96d52debe0": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 100,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 200,
+      "batch_size": 512
+    },
+    "loss": 0.005427419790066779,
+    "time": "2022-11-15 12:21:03"
   }
 }

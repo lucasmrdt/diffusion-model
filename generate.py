@@ -33,7 +33,7 @@ def dict_without_keys(d, keys):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate Diffusion Model.")
-    parser.add_argument("--model_id", type=str, default="0990623cddd911a710bbc398e040718fe6dfb584",
+    parser.add_argument("--model_id", type=str, default="f6e20eee8a2702b174acd04bf0b7fd62b59eb135",
                         help="Model ID to use for generation.")
     parser.add_argument("--sigma", choices=Backwarder.sigma_valid_choices,
                         default=Backwarder.sigma_default, help="Sigma to use for generation.")
@@ -54,8 +54,7 @@ if __name__ == "__main__":
     fwd = Forwarder(sch)
 
     Model = ModelGetter.get_model(model_args["model"])
-    model = Model(sch, fwd,
-                  **dict_without_keys(model_args, ["scheduler"]))
+    model = Model(sch, fwd, chs=model_args["channels"])
     model = nn.DataParallel(model).to(device)
     model.load_state_dict(model_state)
 
