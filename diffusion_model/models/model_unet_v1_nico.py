@@ -9,7 +9,7 @@ from ..constants import device
 
 class MultiHeadAttentionBlock(nn.Module):
     def __init__(self, heads, emb_dim, model_dim, reshape=None, bias=True):
-        super(SelfAttention, self).__init__()
+        super().__init__()
         self.heads = heads
         self.emb_dim = emb_dim
         self.model_dim = model_dim
@@ -116,7 +116,7 @@ class UNet(nn.Module):
     def forward(self, x):
         x, residuals = self.encoder(x)
         if self.attn is not None:
-            x = slef.attn(x, x, x, reshape=x.shape)
+            x = self.attn(x, x, x, reshape=x.shape)
         x = self.decoder(x, residuals)
         x = self.head(x)
         return x
