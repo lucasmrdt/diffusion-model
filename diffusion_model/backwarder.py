@@ -33,6 +33,7 @@ class Backwarder:
         sigmas = sigmas.sqrt()
         return sigmas
 
+    @torch.no_grad()
     def backward(self, xt, t, label):
         z = (torch.randn_like(xt) if t > 1 else torch.zeros_like(xt)).to(device)
         b = xt.shape[0]
@@ -48,15 +49,21 @@ class Backwarder:
         mean = pred
         return mean + sig*z
 
+    @torch.no_grad()
     def backward_loop(self, label, shape, progress_bar=True):
         xt = torch.randn((shape[0], 1, *shape[1:])).to(device)
         t_space = torch.arange(self.sch.n_steps, 0, -1).long()
         if progress_bar:
             t_space = tqdm(t_space, desc="Backwarding", ascii=True)
         for t in t_space:
-            xt = self.backward(xt, t, label)
+            with torch.no_grad():
+                xt_next = self.backward(xt, t, label)
+                del xt
+                xt = xt_next
+            input("Press Enter to continue...")
         return xt
 
+    @torch.no_grad()
     def sample(self, n_samples, shape):
         labels = torch.randint(0, 10, (n_samples,))
         x_sample = self.backward_loop(labels, (n_samples, *shape))

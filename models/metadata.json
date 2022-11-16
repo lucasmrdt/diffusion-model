@@ -1,13 +1,20 @@
 {
   "16602e437202951acb8671b85096b338ebda8cde": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 500,
@@ -19,13 +26,20 @@
   },
   "e5bcd70eb1b405f75f251414a285a52be1c0b8c7": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 50,
@@ -37,13 +51,20 @@
   },
   "094b9bbcf3bfaccaf022cc07ba4693d14172f1a8": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 50,
@@ -55,13 +76,20 @@
   },
   "838c1428a245e3b194907cc53c2e262459abb886": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 50,
@@ -73,13 +101,20 @@
   },
   "45ee082b43d383745b2c3ade9a6fc66b6beabf68": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 50,
@@ -91,13 +126,20 @@
   },
   "46593e02cbbb590d0a91b6278cc8d02b7dbc1d60": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 50,
@@ -109,13 +151,20 @@
   },
   "c4aa06b1b88fac155467d72136dbb1bd574b02df": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 50,
@@ -127,13 +176,20 @@
   },
   "9965e625f6a0151908fa813ca096e493fc17223c": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 50,
@@ -145,13 +201,20 @@
   },
   "a3f2e8d0c21d8294462b26fbb7d97ffa16d93e64": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "epsilon-l1",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 100,
@@ -163,13 +226,20 @@
   },
   "a4cc1d60186c2515f9568a7674750c827d1563c2": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 100,
@@ -181,13 +251,20 @@
   },
   "d4befc659bb9d849b17af3f336bc5096a17fc868": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l1",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 100,
@@ -199,13 +276,20 @@
   },
   "87bfd878156a202f2752b3e89b5173e67513806a": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "epsilon-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 100,
@@ -217,13 +301,20 @@
   },
   "058c3c3806a6b75e6744bc39de97da0ca372abbd": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 100,
@@ -235,13 +326,20 @@
   },
   "4a5ba14ed27425fb0047d1690de78b851dfe821a": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l1",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 100,
@@ -253,13 +351,20 @@
   },
   "0990623cddd911a710bbc398e040718fe6dfb584": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l1",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 1000,
@@ -271,13 +376,20 @@
   },
   "09593b8aa5cc97196cbe3d9f33ca8da9a60d2423": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 1000,
@@ -289,13 +401,20 @@
   },
   "17d2a1ea86a08e4bb547f304550db43b73709075": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 1000,
@@ -307,13 +426,20 @@
   },
   "b48ea8d368fdb63bc890dd87361c47416c66428e": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [64, 128, 256],
+      "channels": [
+        64,
+        128,
+        256
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 1000,
@@ -325,13 +451,21 @@
   },
   "f6e20eee8a2702b174acd04bf0b7fd62b59eb135": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128, 256],
+      "channels": [
+        32,
+        64,
+        128,
+        256
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 1000,
@@ -343,13 +477,20 @@
   },
   "2d607f706655d1d33ae01716c791c51187977592": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 20,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 200,
@@ -361,13 +502,20 @@
   },
   "88e65db88b28ba1f547f34d0187f22b69f9d9592": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 50,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 200,
@@ -379,13 +527,20 @@
   },
   "cfbfe84ac9872f0b57da128ce3700d96d52debe0": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 100,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 200,
@@ -397,13 +552,20 @@
   },
   "59ec778dd3b9a94d2406e14ee94c07b68b10365e": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 200,
@@ -415,13 +577,20 @@
   },
   "7cc42cbfef47d337273394ad4cc231f7e0a55808": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 60,
@@ -433,13 +602,20 @@
   },
   "72bcdd268879f32df5ec439c1af9c07c33555e2a": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 5,
@@ -451,13 +627,20 @@
   },
   "bdfb5c01f698bf9871be0941f0acf21fc291e4bf": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 1,
@@ -469,13 +652,20 @@
   },
   "96eb02fa623e08088904b22bc203c4f0cd584587": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 10,
@@ -487,13 +677,20 @@
   },
   "225f42563cded37eeefaffeaa970acdcbe941967": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 40,
@@ -505,13 +702,20 @@
   },
   "9f57475d776b63f3c57c7584c9270a03a8be57a5": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 80,
@@ -523,13 +727,20 @@
   },
   "1ad2220f73c4d6c9ddcca3f20cdfe4650ca8a917": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 25,
@@ -541,13 +752,20 @@
   },
   "b4c4faff532fa68c3728f6e368089861450d316d": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 50,
@@ -559,13 +777,20 @@
   },
   "b71c4558c97d9e3a0a724ad123800a58f38fd7aa": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 75,
@@ -577,13 +802,20 @@
   },
   "ae644d494385db5f1ffa8c0707cd55ad3b145951": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 1,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 200,
@@ -595,13 +827,20 @@
   },
   "4648753978db179661bbbe5b53722a1ad66f38ba": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 2,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 200,
@@ -613,13 +852,20 @@
   },
   "c7a9b2f797ac37317666749e68e0950a5bc6f491": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 5,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 200,
@@ -631,13 +877,20 @@
   },
   "191fa8820c1f70aebfa696307047fb028c7de2c7": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-gamma-bar",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 100,
@@ -649,13 +902,20 @@
   },
   "8ea70dd6a6c54428bdffe9782f8dd65059207072": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-x",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 100,
@@ -667,13 +927,20 @@
   },
   "38139a585fce461f46bf8d852da9f61688133422": {
     "args": {
-      "normalize_range": [0, 1],
+      "normalize_range": [
+        0,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 100,
@@ -685,13 +952,20 @@
   },
   "3767016b1bd404c84d05b4fe083d2d6c94171747": {
     "args": {
-      "normalize_range": [0, 255],
+      "normalize_range": [
+        0,
+        255
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 100,
@@ -703,13 +977,20 @@
   },
   "99b9d8cd759743d85901503b123717028b5d2f06": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
       "n_steps": 10,
       "scheduler": "cosine",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 100,
@@ -721,15 +1002,23 @@
   },
   "5a45c62e25e8c523627fb3b2c649a30bb398c36c": {
     "args": {
-      "normalize_range": [0, 1],
+      "normalize_range": [
+        0,
+        1
+      ],
       "batch_size": 1024,
       "n_steps": 50,
-      "lr": 1e-5,
+      "lr": 1e-05,
       "epochs": 50,
       "scheduler": "linear-gamma-bar",
       "loss": "mu-tild-l1",
       "max_beta": 0.9999,
-      "channels": [16, 32, 64, 128],
+      "channels": [
+        16,
+        32,
+        64,
+        128
+      ],
       "model": "unet_v1",
       "optimizer": "sgd"
     },
@@ -739,7 +1028,10 @@
   },
   "2d296bc7f26c829499a634d4408061deb74d50f0": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "batch_size": 512,
       "n_steps": 50,
       "lr": 0.0001,
@@ -747,7 +1039,11 @@
       "scheduler": "cosine",
       "loss": "x-prev-l1",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "model": "unet_v1",
       "optimizer": "adam",
       "verbose": true
@@ -764,12 +1060,20 @@
       "sigma": "beta",
       "verbose": "beta",
       "epochs": 1,
-      "normalize_range": [-0.5, 0.5],
+      "normalize_range": [
+        -0.5,
+        0.5
+      ],
       "n_steps": 500,
       "lr": 0.001,
       "scheduler": "linear-x",
       "loss": "epsilon-l1",
-      "channels": [32, 64, 128, 256],
+      "channels": [
+        32,
+        64,
+        128,
+        256
+      ],
       "model": "unet_v1"
     },
     "loss": 0.14429633617401122,
@@ -784,12 +1088,19 @@
       "sigma": "beta",
       "verbose": false,
       "epochs": 1,
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "n_steps": 500,
       "lr": 0.01,
       "scheduler": "cosine",
       "loss": "mu-tild-l2",
-      "channels": [8, 16, 32],
+      "channels": [
+        8,
+        16,
+        32
+      ],
       "model": "unet_v1"
     },
     "loss": 0.02516965763643384,
@@ -804,12 +1115,19 @@
       "sigma": "beta",
       "verbose": false,
       "epochs": 1,
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "n_steps": 10,
       "lr": 0.01,
       "scheduler": "linear-noise",
       "loss": "epsilon-l2",
-      "channels": [16, 32, 64],
+      "channels": [
+        16,
+        32,
+        64
+      ],
       "model": "unet_v1"
     },
     "loss": 0.11888407859951258,
@@ -824,12 +1142,20 @@
       "sigma": "beta",
       "verbose": false,
       "epochs": 50,
-      "normalize_range": [0, 1],
+      "normalize_range": [
+        0,
+        1
+      ],
       "n_steps": 500,
       "lr": 0.001,
       "scheduler": "cosine",
       "loss": "x-prev-l1",
-      "channels": [32, 64, 128, 256],
+      "channels": [
+        32,
+        64,
+        128,
+        256
+      ],
       "model": "unet_v1"
     },
     "loss": 0.00877510120626539,
@@ -844,12 +1170,20 @@
       "sigma": "beta",
       "verbose": false,
       "epochs": 50,
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "n_steps": 100,
       "lr": 0.001,
       "scheduler": "linear-noise",
       "loss": "x-prev-l2",
-      "channels": [16, 32, 64, 128],
+      "channels": [
+        16,
+        32,
+        64,
+        128
+      ],
       "model": "unet_v1"
     },
     "loss": 0.001140393149398733,
@@ -864,12 +1198,19 @@
       "sigma": "beta",
       "verbose": false,
       "epochs": 50,
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "n_steps": 100,
       "lr": 0.01,
       "scheduler": "linear-x",
       "loss": "x-prev-l1",
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "model": "unet_v1"
     },
     "loss": 0.024162940494716168,
@@ -884,12 +1225,19 @@
       "sigma": "beta",
       "verbose": false,
       "epochs": 50,
-      "normalize_range": [0, 1],
+      "normalize_range": [
+        0,
+        1
+      ],
       "n_steps": 50,
       "lr": 0.01,
       "scheduler": "linear-gamma-bar",
       "loss": "x-prev-l1",
-      "channels": [16, 32, 64],
+      "channels": [
+        16,
+        32,
+        64
+      ],
       "model": "unet_v1"
     },
     "loss": 0.02267071232199669,
@@ -903,12 +1251,19 @@
       "sigma": "beta",
       "verbose": false,
       "epochs": 50,
-      "normalize_range": [-0.5, 0.5],
+      "normalize_range": [
+        -0.5,
+        0.5
+      ],
       "n_steps": 100,
       "lr": 0.01,
       "scheduler": "linear-gamma-bar",
       "loss": "epsilon-l1",
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "model": "unet_v1"
     },
     "loss": 0.06166935469955206,
@@ -923,12 +1278,19 @@
       "sigma": "beta",
       "verbose": false,
       "epochs": 50,
-      "normalize_range": [0, 1],
+      "normalize_range": [
+        0,
+        1
+      ],
       "n_steps": 50,
       "lr": 0.0001,
       "scheduler": "linear-x",
       "loss": "mu-tild-l1",
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "model": "unet_v1"
     },
     "loss": 0.021973543893545867,
@@ -943,26 +1305,41 @@
       "sigma": "beta",
       "verbose": false,
       "epochs": 50,
-      "normalize_range": [0, 1],
+      "normalize_range": [
+        0,
+        1
+      ],
       "n_steps": 20,
       "lr": 0.01,
       "scheduler": "linear-x",
       "loss": "x-prev-l1",
-      "channels": [8, 16, 32],
+      "channels": [
+        8,
+        16,
+        32
+      ],
       "model": "unet_v1"
     },
-    "loss": 0.08975585997104644,
-    "time": "2022-11-16 16:02:58"
+    "loss": 0.08886023722589016,
+    "time": "2022-11-16 16:07:57",
+    "score": 276.12891424747517
   },
   "44516e661e1dadc2a3cd2a66696a5b3c2bd7e5f1": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "unet_attention",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "time_attn": true,
       "mid_attn": true,
       "optimizer": "adam",
@@ -973,18 +1350,26 @@
       "verbose": false,
       "sigma": "beta"
     },
-    "loss": 0.005778953107073903,
-    "time": "2022-11-16 16:03:52"
+    "loss": 0.005552468437235803,
+    "time": "2022-11-16 16:10:26",
+    "score": 24.98356374002185
   },
   "93c9024f37ad8990980a1302209d9ddcefab6308": {
     "args": {
-      "normalize_range": [-1, 1],
+      "normalize_range": [
+        -1,
+        1
+      ],
       "loss": "mu-tild-l2",
       "model": "dense",
       "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
-      "channels": [32, 64, 128],
+      "channels": [
+        32,
+        64,
+        128
+      ],
       "optimizer": "adam",
       "lr": 0.001,
       "epochs": 5,
@@ -995,5 +1380,88 @@
     },
     "loss": 0.27659480795264246,
     "time": "2022-11-16 15:51:55"
+  },
+  "793963ef47a812f3c34c43273723a54f3b0bd887": {
+    "args": {
+      "batch_size": 256,
+      "max_beta": 0.999,
+      "optimizer": "adam",
+      "sigma": "beta",
+      "verbose": false,
+      "epochs": 50,
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "n_steps": 20,
+      "lr": 0.001,
+      "scheduler": "linear-gamma-bar",
+      "loss": "x-prev-l1",
+      "channels": [
+        16,
+        32,
+        64
+      ],
+      "model": "unet_v1"
+    },
+    "loss": 0.023998166201636195,
+    "time": "2022-11-16 16:27:37",
+    "score": 21.335861088416834
+  },
+  "2fda852c9626d791f487f9f80e2a29948bd32a79": {
+    "args": {
+      "batch_size": 256,
+      "max_beta": 0.999,
+      "optimizer": "adam",
+      "sigma": "beta",
+      "verbose": false,
+      "epochs": 50,
+      "normalize_range": [
+        0,
+        1
+      ],
+      "n_steps": 1,
+      "lr": 0.0001,
+      "scheduler": "linear-noise",
+      "loss": "mu-tild-l1",
+      "channels": [
+        16,
+        32,
+        64,
+        128
+      ],
+      "model": "unet_v1"
+    },
+    "loss": 0.07782243900001048,
+    "time": "2022-11-16 16:45:18"
+  },
+  "5b171aed8f7e13ade3b5caad759a980ce9810a5e": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "dense",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 1,
+      "batch_size": 256,
+      "optuna": false,
+      "verbose": false,
+      "sigma": "beta"
+    },
+    "loss": 0.27945060171186925,
+    "time": "2022-11-16 16:41:15"
   }
 }

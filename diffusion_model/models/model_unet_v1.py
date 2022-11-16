@@ -180,27 +180,3 @@ class Model_UNet_V1(nn.Module):
 
         out = self.u_net(input)
         return out
-
-    def _one_step(self, loss_fn: Loss, X, label):
-        batch_size = X.shape[0]
-        t = torch.randint(1, self.sch.n_steps+1, (batch_size, 1))
-
-        X, label, t = X.to(device), label.to(device), t.to(device)
-
-        x_noisy, noise = self.fwd.forward(X, t)
-        model_pred = self.forward(x_noisy, t, label)
-
-        return loss_fn(t, x_noisy, noise, model_pred)
-
-    def one_step_eval(self, loss_fn: Loss, X, label):
-        loss = self._one_step(loss_fn, X, label)
-        return loss.item()
-
-    def one_step_training(self, optimizer: torch.optim.Optimizer, loss_fn: Loss, X, label):
-        optimizer.zero_grad()
-
-        loss = self._one_step(loss_fn, X, label)
-        loss.backward()
-        optimizer.step()
-
-        return loss.item()
