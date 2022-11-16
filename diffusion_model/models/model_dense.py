@@ -67,7 +67,8 @@ class model_dense(nn.Module):
         input = torch.cat([x, label, t], dim=1)
 
         x = self.input(input)
-        x = self.hidden(x)
+        for layer in self.hidden:
+            x = self.layer(x)
         out = self.output(x)
 
         return out
