@@ -1229,5 +1229,32 @@
     },
     "loss": 0.02267071232199669,
     "time": "2022-11-16 14:58:02"
+  },
+  "93c9024f37ad8990980a1302209d9ddcefab6308": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "mu-tild-l2",
+      "model": "dense",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 5,
+      "batch_size": 256,
+      "optuna": false,
+      "verbose": false,
+      "sigma": "beta"
+    },
+    "loss": 0.27659480795264246,
+    "time": "2022-11-16 15:51:55"
   }
 }
