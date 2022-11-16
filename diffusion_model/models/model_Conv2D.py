@@ -3,8 +3,8 @@ from torch import nn
 
 from ..scheduler import Scheduler
 from ..forwarder import Forwarder
-from ..loss import Loss
 from ..constants import device
+
 
 class Conv2D_relu(nn.Module):
     def __init__(self, input_dim, output_dim):
@@ -18,6 +18,7 @@ class Conv2D_relu(nn.Module):
         x = self.conv(x)
         out = self.act(x)
         return out
+
 
 class model_Conv2D(nn.Module):
 
@@ -46,9 +47,8 @@ class model_Conv2D(nn.Module):
         self.hidden = nn.ModuleList([Conv2D_relu(width, width) for _ in range(depth)])
         self.output = nn.Sequential(
             nn.Dropout(dropout),
-            nn.Conv2d(width, 1),
+            nn.Conv2d(width, 1, 3, padding='same'),
         )
-
 
     def forward(self, x, t, label):
         t = 2 * t / self.sch.n_steps - 1  # [-1, 1]
@@ -59,35 +59,10 @@ class model_Conv2D(nn.Module):
         label = self.label_embedding(label)
         label = label[:, None]
 
-        input = torch.cat([x, label, t], dim=1)
+        inputs = torch.cat([x, label, t], dim=1)
 
-        x = self.input(input)
+        x = self.input(inputs)
         for layer in self.hidden:
             x = layer(x)
         out = self.output(x)
-
         return out
-
-    def _one_step(self, loss_fn: Loss, x, label):
-        batch_size = x.shape[0]
-        t = torch.randint(1, self.sch.n_steps+1, (batch_size, 1))
-
-        x, label, t = X.to(device), label.to(device), t.to(device)
-
-        x_noisy, noise = self.fwd.forward(X, t)
-        model_pred = self.forward(x_noisy, t, label)
-
-        return loss_fn(t, x_noisy, noise, model_pred)
-
-    def one_step_eval(self, loss_fn: Loss, x, label):
-        loss = self._one_step(loss_fn, x, label)
-        return loss.item()
-
-    def one_step_training(self, optimizer: torch.optim.Optimizer, loss_fn: Loss, x, label):
-        optimizer.zero_grad()
-
-        loss = self._one_step(loss_fn, x, label)
-        loss.backward()
-        optimizer.step()
-
-        return loss.item()
