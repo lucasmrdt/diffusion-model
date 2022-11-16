@@ -43,7 +43,7 @@ class model_dense(nn.Module):
         )
 
         self.input = nn.Sequential(
-            nn.flatten(),
+            nn.Flatten(),
             nn.Linear((32*32)*3,width),
             nn.ReLU(),
         )
@@ -66,7 +66,7 @@ class model_dense(nn.Module):
 
         input = torch.cat([x, label, t], dim=1)
 
-        x = slef.input(input)
+        x = self.input(input)
         x = self.hidden(x)
         out = self.output(x)
 
