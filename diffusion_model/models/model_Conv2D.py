@@ -62,7 +62,8 @@ class model_Conv2D(nn.Module):
         input = torch.cat([x, label, t], dim=1)
 
         x = self.input(input)
-        x = self.hidden(x)
+        for layer in self.hidden:
+            x = layer(x)
         out = self.output(x)
 
         return out
