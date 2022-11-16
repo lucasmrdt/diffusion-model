@@ -9,7 +9,7 @@ from ..constants import device
 
 class MultiHeadAttentionBlock(nn.Module):
     def __init__(self, heads, emb_dim, model_dim, reshape=None, bias=True):
-        super(SelfAttention, self).__init__()
+        super().__init__()
         self.heads = heads
         self.emb_dim = emb_dim
         self.model_dim = model_dim
@@ -27,7 +27,8 @@ class MultiHeadAttentionBlock(nn.Module):
         N = query_inputs.shape[0]
         query_inputs, key_inputs, value_inputs = query_inputs.reshape(query_inputs.shape[0], -1, query_inputs.shape[-1]), key_inputs.reshape(
             key_inputs.shape[0], -1, key_inputs.shape[-1]), value_inputs.reshape(value_inputs.shape[0], -1, value_inputs.shape[-1])
-        value_len, key_len, query_len = value_inputs.shape[1], key_inputs.shape[1], query_inputs.shape[1]
+        value_len, key_len, query_len = value_inputs.shape[
+            1], key_inputs.shape[1], query_inputs.shape[1]
 
         # Create Q, K, and V using input vectors
         q = self.to_query(query_inputs)
@@ -106,6 +107,7 @@ class UNet(nn.Module):
     def __init__(self, down_chs, up_chs, mid_attn: bool = False):
         super().__init__()
         self.encoder = Encoder(down_chs)
+        self.mid_attn = mid_attn
         if mid_attn:
             self.attn = MultiHeadAttentionBlock(
                 1, 32//(2**len(down_chs-1)), 32//(2**len(down_chs-1)))
@@ -115,14 +117,14 @@ class UNet(nn.Module):
 
     def forward(self, x):
         x, residuals = self.encoder(x)
-        if self.attn is not None:
-            x = slef.attn(x, x, x, reshape=x.shape)
+        if self.mid_attn:
+            x = self.attn(x, x, x, reshape=x.shape)
         x = self.decoder(x, residuals)
         x = self.head(x)
         return x
 
 
-class Model_UNet_V1(nn.Module):
+class Model_UNet_Attention(nn.Module):
     def __init__(self, scheduler: Scheduler, forwarder: Forwarder, chs=(32, 64, 128), time_attn: bool = False, mid_attn: bool = False, *_, **__) -> None:
         """
 
@@ -155,6 +157,7 @@ class Model_UNet_V1(nn.Module):
             nn.Unflatten(1, (32, 32)),
         )
 
+        self.time_attn = time_attn
         if time_attn:
             self.time_attention = MultiHeadAttentionBlock(
                 1, 32*32, 32*32, reshape=(1, 32, 32, -1))
@@ -168,7 +171,7 @@ class Model_UNet_V1(nn.Module):
         label = self.label_embedding(label)
         label = label[:, None]
 
-        if self.time_attn is not None:
+        if self.time_attn:
             X = self.time_attention(t, X, X)
         input = torch.cat([X, label, t], dim=1)
 
