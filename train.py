@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 
-import torch
-import torch.nn as nn
-import numpy as np
-import optuna
-import os
-import argparse
-import json
-import time
-from functools import partial
-from tqdm.auto import tqdm, trange
+from score import compute_score
+from diffusion_model import ModelGetter, LossGetter, OptimizerGetter, Forwarder, Scheduler, Backwarder, get_mnist_dataset, MODELS_DIR, device
 from hashlib import sha1
+from tqdm.auto import tqdm, trange
+from functools import partial
+import time
+import json
+import argparse
+import os
+import optuna
+import numpy as np
+import torch.nn as nn
+import torch
+import warnings
 
-from diffusion_model import ModelGetter, LossGetter, OptimizerGetter, Forwarder, Scheduler, get_mnist_dataset, MODELS_DIR, device
+warnings.filterwarnings("ignore")
 
 
 def one_step(sch, fwd, model, loss_fn, X, label):
@@ -39,9 +42,10 @@ def one_step_training(sch, fwd, opt, model, loss_fn, X, label):
     return loss.item()
 
 
-def save_model(model, loss, args):
+def save_model(model_id, model, loss, args):
+    state = {"model_state_dict": model.state_dict()}
+    torch.save(state, os.path.join(MODELS_DIR, f"{model_id}.pt"))
     metadata = json.load(open(os.path.join(MODELS_DIR, "metadata.json")))
-    model_id = sha1(str(vars(args)).encode()).hexdigest()
     metadata[model_id] = {
         "args": vars(args),
         "loss": loss,
@@ -49,8 +53,6 @@ def save_model(model, loss, args):
     }
     json.dump(metadata, open(os.path.join(
         MODELS_DIR, "metadata.json"), "w"), indent=2)
-    state = {"model_state_dict": model.state_dict()}
-    torch.save(state, os.path.join(MODELS_DIR, f"{model_id}.pt"))
 
 
 def int_tuple(s):
@@ -58,6 +60,9 @@ def int_tuple(s):
 
 
 def train(args):
+    if args.verbose:
+        print("Args:", args)
+
     print("Dataset loading...")
     dataset = get_mnist_dataset(args.normalize_range, args.batch_size)
     train_loader, test_loader = dataset
@@ -78,6 +83,7 @@ def train(args):
     Optimizer = OptimizerGetter.get_optimizer(args.optimizer)
     opt = Optimizer(model.parameters(), lr=args.lr)
     print("Model built.")
+    model_id = sha1(str(vars(args)).encode()).hexdigest()
 
     print("Start Training :")
     best_loss = np.inf
@@ -102,43 +108,48 @@ def train(args):
             loss_eval = sum(losses)/len(losses)
             if loss_eval <= best_loss:
                 best_loss = loss_eval
-                save_model(model, best_loss, args)
+                save_model(model_id, model, best_loss, args)
             te.set_postfix(loss_eval=loss_eval, best_loss=best_loss)
-    return best_loss
+    print("Training finished.")
+    score = compute_score(argparse.Namespace(
+        model_id=model_id,
+        num_workers=32,
+        sigma=args.sigma
+    ))
+    return score
 
 
-def objective(epochs, trial):
-    normalize_range = trial.suggest_categorical(
-        "normalize_range", [(-1, 1), (0, 1), (-0.5, 0.5)])
-    print("normalize_range:", normalize_range)
-    batch_size = trial.suggest_categorical(
-        "batch_size", [32, 64, 128, 256, 512, 1024])
-    n_steps = trial.suggest_categorical(
-        "n_steps", [1, 2, 5, 10, 20, 50, 100, 500, 1000])
-    lr = trial.suggest_categorical("lr", [1e-1, 1e-2, 1e-3, 1e-4, 1e-5])
+def objective(args, trial):
+    normalize_range = trial.suggest_categorical("normalize_range",
+                                                [(-1, 1), (0, 1), (-0.5, 0.5)])
+    n_steps = trial.suggest_categorical("n_steps",
+                                        [1, 2, 5, 10, 20, 50, 100, 500, 1000])
+    lr = trial.suggest_categorical("lr", [1e-2, 1e-3, 1e-4])
     scheduler = trial.suggest_categorical("scheduler", Scheduler.valid_choices)
     loss = trial.suggest_categorical("loss", LossGetter.valid_choices)
-    max_beta = trial.suggest_categorical("max_beta", [0.99, 0.999, 0.9999])
-    channels = trial.suggest_categorical("channels", [(
-        32, 64, 128), (16, 32, 64), (8, 16, 32), (32, 64, 128, 256), (16, 32, 64, 128)])
+    channels = trial.suggest_categorical("channels",
+                                         [(32, 64, 128), (16, 32, 64), (8, 16, 32), (32, 64, 128, 256), (16, 32, 64, 128)])
     model = trial.suggest_categorical("model", ModelGetter.valid_choices)
-    optimizer = trial.suggest_categorical(
-        "optimizer", OptimizerGetter.valid_choices)
 
-    args = argparse.Namespace(
+    train_args = argparse.Namespace(
+        # fixed params
+        batch_size=args.batch_size,
+        max_beta=args.max_beta,
+        optimizer=args.optimizer,
+        sigma=args.sigma,
+        verbose=args.verbose,
+        epochs=args.epochs,
+
+        # variable params
         normalize_range=normalize_range,
-        batch_size=batch_size,
         n_steps=n_steps,
         lr=lr,
-        epochs=epochs,
         scheduler=scheduler,
         loss=loss,
-        max_beta=max_beta,
         channels=channels,
         model=model,
-        optimizer=optimizer,
     )
-    return train(args)
+    return train(train_args)
 
 
 if __name__ == "__main__":
@@ -167,10 +178,14 @@ if __name__ == "__main__":
                         help="The batch size to use for training.")
     parser.add_argument("--optuna", action='store_true', default=False,
                         help="Use optuna for hyperparameter tuning.")
+    parser.add_argument("--verbose", action='store_true', default=False,
+                        help="Print more information.")
+    parser.add_argument("--sigma", choices=Backwarder.sigma_valid_choices,
+                        default=Backwarder.sigma_default, help="Sigma to use for generation.")
     args = parser.parse_args()
 
     if args.optuna:
-        objective = partial(objective, args.epochs)
+        objective = partial(objective, args)
         study = optuna.create_study(direction="minimize")
         study.optimize(objective, n_trials=100)
     else:

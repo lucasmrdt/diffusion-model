@@ -26,8 +26,10 @@ screen -S "x-prev-cosine" -dm ./train.py --loss=x-prev-l2 --epochs=100 --batch_s
 
 screen -S "x-prev-01" -dm ./train.py --loss=x-prev-l2 --epochs=100 --batch_size=512 --normalize_range=0,1;
 screen -S "x-prev-0255" -dm ./train.py --loss=x-prev-l2 --epochs=100 --batch_size=512 --normalize_range=0,255;
+screen -S "optuna" -dm ./train.py --epochs=50 --optuna;
 
-./generate.py --model_id=59ec778dd3b9a94d2406e14ee94c07b68b10365e --grid;
+./generate.py --model_id=3767016b1bd404c84d05b4fe083d2d6c94171747 --grid;
+./generate.py --model_id=38139a585fce461f46bf8d852da9f61688133422 --grid;
 ```
 
 # Score
@@ -37,14 +39,14 @@ screen -S "x-prev-0255" -dm ./train.py --loss=x-prev-l2 --epochs=100 --batch_siz
 | 09593b8aa5cc97196cbe3d9f33ca8da9a60d2423 | 24.447352257962507 | 0.3779296875 | 0.19140625  |
 | 0990623cddd911a710bbc398e040718fe6dfb584 | 43.25397445062495  | 0.2431640625 | 0.107421875 |
 
-09593b8aa5cc97196cbe3d9f33ca8da9a60d2423 -> FID:  18.912463302436265 (1024)
-                                         -> FID:  14.041892065052991 (60000)
-                                         -> FID:  0.030252694025587945 (60000+dims=64)
+09593b8aa5cc97196cbe3d9f33ca8da9a60d2423 -> FID: 18.912463302436265 (1024)
+-> FID: 14.041892065052991 (60000)
+-> FID: 0.030252694025587945 (60000+dims=64)
 
-0990623cddd911a710bbc398e040718fe6dfb584 -> FID:  23.392960888701424 (1024)
-                                         -> FID:  21.14389089247078 (2048)
-                                         -> FID:  19.78453120816181 (60000)
-                                         -> FID:  0.008670651386033679 (60000+dims=64)
+0990623cddd911a710bbc398e040718fe6dfb584 -> FID: 23.392960888701424 (1024)
+-> FID: 21.14389089247078 (2048)
+-> FID: 19.78453120816181 (60000)
+-> FID: 0.008670651386033679 (60000+dims=64)
 VGG
 
 - differente archi (dense, conv, u-net)

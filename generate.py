@@ -8,6 +8,8 @@ import json
 import argparse
 import numpy as np
 from tqdm import trange
+from multiprocessing import Pool
+from tqdm.contrib.concurrent import process_map
 
 
 from diffusion_model import ModelGetter, LossGetter, Forwarder, Backwarder, Scheduler, MODELS_DIR, device
@@ -16,8 +18,8 @@ from diffusion_model import ModelGetter, LossGetter, Forwarder, Backwarder, Sche
 def get_model_info(model_id=None):
     metadata = json.load(open(os.path.join(MODELS_DIR, "metadata.json")))
     if not model_id in metadata:
-        print("No model_id provided, using best model...")
-        model_id = max(metadata, key=lambda k: metadata[k]["loss"])
+        print("No valid model_id provided, using best model...")
+        model_id = min(metadata, key=lambda k: metadata[k]["score"])
         print(f"Using: {model_id}")
     else:
         print(f"Using: {model_id}")
@@ -27,22 +29,12 @@ def get_model_info(model_id=None):
     return state["model_state_dict"], model_args
 
 
-def dict_without_keys(d, keys):
-    return {k: v for k, v in d.items() if k not in keys}
+def save_img(param):
+    i, img = param
+    torchvision.utils.save_image(img[0, :, :], f"samples/{i}.png")
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generate Diffusion Model.")
-    parser.add_argument("--model_id", type=str, default="f6e20eee8a2702b174acd04bf0b7fd62b59eb135",
-                        help="Model ID to use for generation.")
-    parser.add_argument("--sigma", choices=Backwarder.sigma_valid_choices,
-                        default=Backwarder.sigma_default, help="Sigma to use for generation.")
-    parser.add_argument("--n_samples", type=int, default=1024,
-                        help="Number of samples to generate.")
-    parser.add_argument("--grid", action='store_true', default=False,
-                        help="Whether to generate a grid of samples.")
-    args = parser.parse_args()
-
+def generate(args):
     print("Model Loading...")
     model_state, model_args = get_model_info(args.model_id)
 
@@ -66,12 +58,28 @@ if __name__ == "__main__":
     print("Start Generating :")
     os.makedirs("samples", exist_ok=True)
 
-    x = bkw.sample(args.n_samples, (32, 32))
+    with torch.no_grad():
+        x = bkw.sample(args.n_samples, (32, 32))
     x = x[:, :, 2:30, 2:30]  # remove padding
     if args.grid:
         file_name = f"{args.model_id}.png" if args.model_id else "grid.png"
         torchvision.utils.save_image(x, os.path.join("samples", "grid", file_name),
                                      nrow=np.sqrt(args.n_samples).astype(int))
     else:
-        for i in trange(args.n_samples, desc="Saving"):
-            torchvision.utils.save_image(x[i, 0, :, :], f"samples/{i}.png")
+        x = x.cpu()
+        process_map(save_img, enumerate(list(x)))
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Generate Diffusion Model.")
+    parser.add_argument("--model_id", type=str, default="f6e20eee8a2702b174acd04bf0b7fd62b59eb135",
+                        help="Model ID to use for generation.")
+    parser.add_argument("--sigma", choices=Backwarder.sigma_valid_choices,
+                        default=Backwarder.sigma_default, help="Sigma to use for generation.")
+    parser.add_argument("--n_samples", type=int, default=1024,
+                        help="Number of samples to generate.")
+    parser.add_argument("--grid", action='store_true', default=False,
+                        help="Whether to generate a grid of samples.")
+    args = parser.parse_args()
+
+    generate(args)

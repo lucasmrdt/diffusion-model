@@ -42,7 +42,6 @@ class Scheduler:
             betas = get_betas_with_linear_x(n_steps)
         elif schedule_type == "cosine":
             betas = get_betas_with_cosine(n_steps)
-            print(betas)
         elif schedule_type == "linear-gamma-bar":
             betas = get_betas_with_linear_gamma_bar(n_steps)
         else:

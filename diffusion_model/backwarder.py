@@ -52,10 +52,9 @@ class Backwarder:
         xt = torch.randn((shape[0], 1, *shape[1:])).to(device)
         t_space = torch.arange(self.sch.n_steps, 0, -1).long()
         if progress_bar:
-            t_space = tqdm(t_space, desc="Backwarding")
+            t_space = tqdm(t_space, desc="Backwarding", ascii=True)
         for t in t_space:
-            with torch.no_grad():
-                xt = self.backward(xt, t, label)
+            xt = self.backward(xt, t, label)
         return xt
 
     def sample(self, n_samples, shape):
