@@ -7,11 +7,11 @@ from ..loss import Loss
 from ..constants import device
 
 class linear_relu(nn.Module):
-    def __init__(self, input, output):
+    def __init__(self, input_dim, output_dim):
         super().__init__()
 
-        self.input = input
-        self.output = output
+        self.input = input_dim
+        self.output = output_dim
 
         self.linear = nn.Linear(self.input, self.output)
         self.act = nn.ReLU()
@@ -24,7 +24,7 @@ class linear_relu(nn.Module):
 
 class model_dense(nn.Module):
 
-    def __init__(self, scheduler: Scheduler, forwarder: Forwarder, depth = 4, width = 512, dropout = 0.3, *_, **__):
+    def __init__(self, scheduler: Scheduler, forwarder: Forwarder, depth: int = 4, width: int = 512, dropout: float = 0.3, *_, **__):
         super().__init__()
 
         self.sch = scheduler
