@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 
-from diffusion_model import ModelGetter, LossGetter, OptimizerGetter, Forwarder, Scheduler, get_mnist_dataset, MODELS_DIR, device
-from tqdm.auto import tqdm, trange
 import torch
 import torch.nn as nn
 import numpy as np
+import optuna
 import os
 import argparse
 import json
 import time
+from functools import partial
+from tqdm.auto import tqdm, trange
 from hashlib import sha1
+
+from diffusion_model import ModelGetter, LossGetter, OptimizerGetter, Forwarder, Scheduler, get_mnist_dataset, MODELS_DIR, device
 
 
 def one_step(sch, fwd, model, loss_fn, X, label):
@@ -54,32 +57,7 @@ def int_tuple(s):
     return tuple(int(i) for i in s.split(","))
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Train Diffusion Model.")
-    parser.add_argument("--normalize_range", type=int_tuple,
-                        default=(-1, 1), help="Range to normalize the data to.")
-    parser.add_argument("--loss", choices=LossGetter.valid_choices,
-                        default=LossGetter.default, help="Loss function to use.")
-    parser.add_argument("--model", choices=ModelGetter.valid_choices,
-                        default=ModelGetter.default, help="Model to use.")
-    parser.add_argument("--n_steps", type=int, default=10,
-                        help="Number of noising steps.")
-    parser.add_argument("--scheduler", choices=Scheduler.valid_choices,
-                        default=Scheduler.default, help="Scheduler to use.")
-    parser.add_argument("--max_beta", type=int, default=0.999,
-                        help="Maximum beta value to use.")
-    parser.add_argument("--channels", type=int_tuple, default=(32, 64, 128),
-                        help="Channels to use in the model.")
-    parser.add_argument("--optimizer", type=str, default="adam",
-                        help="Optimizer to use for training.")
-    parser.add_argument("--lr", type=float, default=0.001,
-                        help="Learning rate.")
-    parser.add_argument("--epochs", type=int, default=500,
-                        help="Number of epochs for training.")
-    parser.add_argument("--batch_size", type=int, default=256,
-                        help="The batch size to use for training.")
-    args = parser.parse_args()
-
+def train(args):
     print("Dataset loading...")
     dataset = get_mnist_dataset(args.normalize_range, args.batch_size)
     train_loader, test_loader = dataset
@@ -126,3 +104,74 @@ if __name__ == "__main__":
                 best_loss = loss_eval
                 save_model(model, best_loss, args)
             te.set_postfix(loss_eval=loss_eval, best_loss=best_loss)
+    return best_loss
+
+
+def objective(epochs, trial):
+    normalize_range = trial.suggest_categorical(
+        "normalize_range", [(-1, 1), (0, 1), (-0.5, 0.5)])
+    print("normalize_range:", normalize_range)
+    batch_size = trial.suggest_categorical(
+        "batch_size", [32, 64, 128, 256, 512, 1024])
+    n_steps = trial.suggest_categorical(
+        "n_steps", [1, 2, 5, 10, 20, 50, 100, 500, 1000])
+    lr = trial.suggest_categorical("lr", [1e-1, 1e-2, 1e-3, 1e-4, 1e-5])
+    scheduler = trial.suggest_categorical("scheduler", Scheduler.valid_choices)
+    loss = trial.suggest_categorical("loss", LossGetter.valid_choices)
+    max_beta = trial.suggest_categorical("max_beta", [0.99, 0.999, 0.9999])
+    channels = trial.suggest_categorical("channels", [(
+        32, 64, 128), (16, 32, 64), (8, 16, 32), (32, 64, 128, 256), (16, 32, 64, 128)])
+    model = trial.suggest_categorical("model", ModelGetter.valid_choices)
+    optimizer = trial.suggest_categorical(
+        "optimizer", OptimizerGetter.valid_choices)
+
+    args = argparse.Namespace(
+        normalize_range=normalize_range,
+        batch_size=batch_size,
+        n_steps=n_steps,
+        lr=lr,
+        epochs=epochs,
+        scheduler=scheduler,
+        loss=loss,
+        max_beta=max_beta,
+        channels=channels,
+        model=model,
+        optimizer=optimizer,
+    )
+    return train(args)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Train Diffusion Model.")
+    parser.add_argument("--normalize_range", type=int_tuple,
+                        default=(-1, 1), help="Range to normalize the data to.")
+    parser.add_argument("--loss", choices=LossGetter.valid_choices,
+                        default=LossGetter.default, help="Loss function to use.")
+    parser.add_argument("--model", choices=ModelGetter.valid_choices,
+                        default=ModelGetter.default, help="Model to use.")
+    parser.add_argument("--n_steps", type=int, default=10,
+                        help="Number of noising steps.")
+    parser.add_argument("--scheduler", choices=Scheduler.valid_choices,
+                        default=Scheduler.default, help="Scheduler to use.")
+    parser.add_argument("--max_beta", type=int, default=0.999,
+                        help="Maximum beta value to use.")
+    parser.add_argument("--channels", type=int_tuple, default=(32, 64, 128),
+                        help="Channels to use in the model.")
+    parser.add_argument("--optimizer", type=str, default="adam",
+                        help="Optimizer to use for training.")
+    parser.add_argument("--lr", type=float, default=0.001,
+                        help="Learning rate.")
+    parser.add_argument("--epochs", type=int, default=50,
+                        help="Number of epochs for training.")
+    parser.add_argument("--batch_size", type=int, default=256,
+                        help="The batch size to use for training.")
+    parser.add_argument("--optuna", action='store_true', default=False,
+                        help="Use optuna for hyperparameter tuning.")
+    args = parser.parse_args()
+
+    if args.optuna:
+        objective = partial(objective, args.epochs)
+        study = optuna.create_study(direction="minimize")
+        study.optimize(objective, n_trials=100)
+    else:
+        train(args)

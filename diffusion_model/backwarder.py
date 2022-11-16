@@ -6,6 +6,8 @@ from .scheduler import Scheduler
 from .constants import device
 from .loss import Loss
 
+import gc
+
 
 class Backwarder:
     sigma_valid_choices = [
@@ -37,26 +39,26 @@ class Backwarder:
         t = torch.full((b, 1), t).to(device)
         sch = self.sch
         pred = self.model(xt, t, label)
+        sig = self.sig[t]
         if self.is_predicting_noise:
             mean = 1/sch.sqrt_alpha[t] * (xt - pred*(1-sch.alphas[t]) /
                                           sch.sqrt_one_minus_alphas_bar[t])
         else:
             mean = pred
-        return mean + self.sig[t]*z
+        mean = pred
+        return mean + sig*z
 
     def backward_loop(self, label, shape, progress_bar=True):
         xt = torch.randn((shape[0], 1, *shape[1:])).to(device)
         t_space = torch.arange(self.sch.n_steps, 0, -1).long()
         if progress_bar:
             t_space = tqdm(t_space, desc="Backwarding")
-
-        x_by_t = [xt.detach().cpu()]
         for t in t_space:
-            xt = self.backward(xt, t, label)
-            x_by_t.append(xt.detach().cpu())
-        return x_by_t
+            with torch.no_grad():
+                xt = self.backward(xt, t, label)
+        return xt
 
     def sample(self, n_samples, shape):
         labels = torch.randint(0, 10, (n_samples,))
-        x_by_t = self.backward_loop(labels, (n_samples, *shape))
-        return x_by_t[-1]
+        x_sample = self.backward_loop(labels, (n_samples, *shape))
+        return x_sample

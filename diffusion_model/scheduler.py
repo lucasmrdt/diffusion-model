@@ -21,7 +21,7 @@ def get_betas_with_linear_x(n_steps: int):
 
 def get_betas_with_cosine(n_steps: int):
     s = 0.0008
-    def f(t): return torch.cos((t + s)/(1 + s) * torch.pi/2)**2
+    def f(t): return torch.cos((1 - t + s)/(1 + s) * torch.pi/2)**2
     return get_betas_from_gammas_bar_f(n_steps, f)
 
 
@@ -42,6 +42,7 @@ class Scheduler:
             betas = get_betas_with_linear_x(n_steps)
         elif schedule_type == "cosine":
             betas = get_betas_with_cosine(n_steps)
+            print(betas)
         elif schedule_type == "linear-gamma-bar":
             betas = get_betas_with_linear_gamma_bar(n_steps)
         else:

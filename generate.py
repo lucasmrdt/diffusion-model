@@ -70,7 +70,7 @@ if __name__ == "__main__":
     x = x[:, :, 2:30, 2:30]  # remove padding
     if args.grid:
         file_name = f"{args.model_id}.png" if args.model_id else "grid.png"
-        torchvision.utils.save_image(x, os.path.join("samples", file_name),
+        torchvision.utils.save_image(x, os.path.join("samples", "grid", file_name),
                                      nrow=np.sqrt(args.n_samples).astype(int))
     else:
         for i in trange(args.n_samples, desc="Saving"):
