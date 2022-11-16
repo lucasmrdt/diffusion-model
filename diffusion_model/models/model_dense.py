@@ -68,7 +68,7 @@ class model_dense(nn.Module):
 
         x = self.input(input)
         for layer in self.hidden:
-            x = self.layer(x)
+            x = layer(x)
         out = self.output(x)
 
         return out
