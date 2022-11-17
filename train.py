@@ -77,7 +77,8 @@ def train(args):
     fwd = Forwarder(sch)
 
     Model = ModelGetter.get_model(args.model)
-    model = Model(sch, fwd, chs=args.channels).to(device)
+    model = Model(sch, fwd, chs=args.channels,
+                  time_attn=args.time_attn, mid_attn=args.mid_attn).to(device)
     model = nn.DataParallel(model).cuda()
 
     Optimizer = OptimizerGetter.get_optimizer(args.optimizer)
@@ -172,9 +173,9 @@ if __name__ == "__main__":
                         help="Maximum beta value to use.")
     parser.add_argument("--channels", type=int_tuple, default=(32, 64, 128),
                         help="Channels to use in the model.")
-    parser.add_argument("--time-attn", action='store_true', default=False,
+    parser.add_argument("--time_attn", action='store_true', default=False,
                         help="Use time attention.")
-    parser.add_argument("--mid-attn", action='store_true', default=False,
+    parser.add_argument("--mid_attn", action='store_true', default=False,
                         help="Use mid attention.")
     parser.add_argument("--optimizer", type=str, default="adam",
                         help="Optimizer to use for training.")

@@ -46,7 +46,8 @@ def generate(args):
     fwd = Forwarder(sch)
 
     Model = ModelGetter.get_model(model_args["model"])
-    model = Model(sch, fwd, chs=model_args["channels"])
+    model = Model(sch, fwd, chs=model_args["channels"],
+                  time_attn=model_args["time_attn"], mid_attn=model_args["mid_attn"])
     model = nn.DataParallel(model).to(device)
     model.load_state_dict(model_state)
 

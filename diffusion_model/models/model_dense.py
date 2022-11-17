@@ -24,7 +24,7 @@ class linear_relu(nn.Module):
 
 class model_dense(nn.Module):
 
-    def __init__(self, scheduler: Scheduler, forwarder: Forwarder, depth: int = 4, width: int = 512, dropout: float = 0.3, *_, **__):
+    def __init__(self, scheduler: Scheduler, forwarder: Forwarder, depth: int = 6, width: int = 512, dropout: float = 0.1, *_, **__):
         super().__init__()
 
         self.sch = scheduler
@@ -52,6 +52,7 @@ class model_dense(nn.Module):
         self.output = nn.Sequential(
             nn.Dropout(dropout),
             nn.Linear(width, 32*32),
+            nn.Unflatten(1, (32, 32)),
         )
 
     def forward(self, x, t, label):

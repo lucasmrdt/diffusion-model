@@ -3930,5 +3930,96 @@
     "loss": 0.005320760351605713,
     "time": "2022-11-17 23:22:34",
     "score": 14.707050892677245
+  },
+  "c29db136cfda9c59e8e0f92d10f4c2e901b16517": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 15,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        64,
+        128,
+        256
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 50,
+      "batch_size": 256,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": true,
+      "sigma": "beta"
+    },
+    "loss": 0.005279373645316809,
+    "time": "2022-11-17 23:48:16",
+    "score": 14.874438741888241
+  },
+  "217866e09ac251b207aa780f6e03be9e0d484e0a": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 15,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        64,
+        128,
+        256
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 2000,
+      "batch_size": 256,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": true,
+      "sigma": "beta"
+    },
+    "loss": 0.004747419024351984,
+    "time": "2022-11-18 00:39:55"
+  },
+  "eed97f4175e8b9ce87f9234f099aba71a38387f9": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "dense",
+      "n_steps": 15,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        64,
+        128,
+        256
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 2000,
+      "batch_size": 256,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": true,
+      "sigma": "beta"
+    },
+    "loss": 0.16703026555478573,
+    "time": "2022-11-18 00:44:36"
   }
 }
