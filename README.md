@@ -28,6 +28,8 @@ screen -S "x-prev-01" -dm ./train.py --loss=x-prev-l2 --epochs=100 --batch_size=
 screen -S "x-prev-0255" -dm ./train.py --loss=x-prev-l2 --epochs=100 --batch_size=512 --normalize_range=0,255;
 screen -S "optuna" -dm ./train.py --epochs=50 --optuna;
 
+screen -S "optuna" -dm ./train.py --optuna --epochs=50;
+
 ./generate.py --model_id=3767016b1bd404c84d05b4fe083d2d6c94171747 --grid;
 ./generate.py --model_id=38139a585fce461f46bf8d852da9f61688133422 --grid;
 ```

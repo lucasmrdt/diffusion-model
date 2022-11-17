@@ -61,8 +61,6 @@ class model_dense(nn.Module):
         t = self.time_embedding(t)
         t = t[:, None]
 
-        print(x.shape, t.shape, label.shape)
-
         label = nn.functional.one_hot(label, 10).float().to(device)
         label = self.label_embedding(label)
         label = label[:, None]
@@ -73,5 +71,6 @@ class model_dense(nn.Module):
         for layer in self.hidden:
             x = layer(x)
         out = self.output(x)
+        out = out[:, None]
 
         return out
