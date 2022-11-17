@@ -11,7 +11,7 @@ class LossGetter:
         "epsilon-l2",
         "epsilon-l1",
     ]
-    default = "mu-tild-l2"
+    default = "x-prev-l2"
 
     @staticmethod
     def get_loss(loss: str):

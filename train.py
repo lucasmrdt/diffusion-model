@@ -111,12 +111,15 @@ def train(args):
                 save_model(model_id, model, best_loss, args)
             te.set_postfix(loss_eval=loss_eval, best_loss=best_loss)
     print("Training finished.")
-    score = compute_score(argparse.Namespace(
-        model_id=model_id,
-        num_workers=32,
-        sigma=args.sigma
-    ))
-    return score
+    if args.compute_fid:
+        score = compute_score(argparse.Namespace(
+            model_id=model_id,
+            num_workers=32,
+            sigma=args.sigma
+        ))
+        return score
+    else:
+        return best_loss
 
 
 def objective(args, trial):
@@ -139,6 +142,7 @@ def objective(args, trial):
         sigma=args.sigma,
         verbose=args.verbose,
         epochs=args.epochs,
+        compute_fid=True,
 
         # variable params
         normalize_range=normalize_range,
@@ -184,6 +188,8 @@ if __name__ == "__main__":
                         help="Use optuna for hyperparameter tuning.")
     parser.add_argument("--verbose", action='store_true', default=False,
                         help="Print more information.")
+    parser.add_argument("--compute_fid", action='store_true', default=False,
+                        help="Compute FID score.")
     parser.add_argument("--sigma", choices=Backwarder.sigma_valid_choices,
                         default=Backwarder.sigma_default, help="Sigma to use for generation.")
     args = parser.parse_args()

@@ -34,7 +34,7 @@ if __name__ == "__main__":
         description="Compute Score Diffusion Model.")
     parser.add_argument("--model_id", type=str, default="f6e20eee8a2702b174acd04bf0b7fd62b59eb135",
                         help="Model ID to use for generation.")
-    parser.add_argument("--num_workers", type=int, default=1,
+    parser.add_argument("--num_workers", type=int, default=32,
                         help="Number of workers to use for FID computation.")
     parser.add_argument("--sigma", choices=Backwarder.sigma_valid_choices,
                         default=Backwarder.sigma_default, help="Sigma to use for generation.")
