@@ -2761,6 +2761,34 @@
       "model": "unet_v1"
     },
     "loss": 0.05487980181351304,
-    "time": "2022-11-17 15:22:01"
+    "time": "2022-11-17 15:22:01",
+    "score": 369.32694758919786
+  },
+  "bf6f3c93ac63f09e394b01ab077f7251b1e4d19c": {
+    "args": {
+      "batch_size": 256,
+      "max_beta": 0.999,
+      "optimizer": "adam",
+      "sigma": "beta",
+      "verbose": false,
+      "epochs": 50,
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "n_steps": 2,
+      "lr": 0.01,
+      "scheduler": "cosine",
+      "loss": "mu-tild-l2",
+      "channels": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "model": "unet_v1"
+    },
+    "loss": 0.24069284088909626,
+    "time": "2022-11-17 15:27:26"
   }
 }

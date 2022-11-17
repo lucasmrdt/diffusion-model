@@ -3,7 +3,6 @@ from torch import nn
 
 from ..scheduler import Scheduler
 from ..forwarder import Forwarder
-from ..loss import Loss
 from ..constants import device
 
 
@@ -53,7 +52,6 @@ class model_dense(nn.Module):
         self.output = nn.Sequential(
             nn.Dropout(dropout),
             nn.Linear(width, 32*32),
-            nn.Unflatten(1, (32, 32)),
         )
 
     def forward(self, x, t, label):
@@ -65,12 +63,11 @@ class model_dense(nn.Module):
         label = self.label_embedding(label)
         label = label[:, None]
 
-        input = torch.cat([x, label, t], dim=1)
+        inputs = torch.cat([x, label, t], dim=1)
 
-        x = self.input(input)
+        x = self.input(inputs)
         for layer in self.hidden:
             x = layer(x)
         out = self.output(x)
         out = out[:, None]
-
         return out

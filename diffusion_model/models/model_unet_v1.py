@@ -3,31 +3,27 @@ from torch import nn
 
 from ..scheduler import Scheduler
 from ..forwarder import Forwarder
-from ..loss import Loss
 from ..constants import device
 
 
 class MultiHeadAttentionBlock(nn.Module):
     def __init__(self, heads, emb_dim, model_dim, reshape=None, bias=True):
-        super(SelfAttention, self).__init__()
+        super().__init__()
         self.heads = heads
         self.emb_dim = emb_dim
         self.model_dim = model_dim
-        self.head_dim = embed_size // heads
+        self.head_dim = emb_dim // heads
         assert (
-            self.head_dim * heads == embed_size
+            self.head_dim * heads == emb_dim
         ), "Embedding size needs to be divisible by heads"
         self.to_query = nn.Linear(emb_dim, model_dim, bias=bias)
-        self.to_query.weight = nn.Parameter(w_query.t())
         self.to_key = nn.Linear(emb_dim, model_dim, bias=bias)
-        self.to_key.weight = nn.Parameter(w_key.t())
         self.to_value = nn.Linear(emb_dim, model_dim, bias=bias)
-        self.to_value.weight = nn.Parameter(w_value.t())
         self.reshape = reshape
 
     def forward(self, query_inputs, key_inputs, value_inputs):
         # getting them shapes
-        N = query.shape[0]
+        N = query_inputs.shape[0]
         query_inputs, key_inputs, value_inputs = query_inputs.reshape(query_inputs.shape[0], -1, query_inputs.shape[-1]), key_inputs.reshape(
             key_inputs.shape[0], -1, key_inputs.shape[-1]), value_inputs.reshape(value_inputs.shape[0], -1, value_inputs.shape[-1])
         value_len, key_len, query_len = value_inputs.shape[
@@ -46,7 +42,7 @@ class MultiHeadAttentionBlock(nn.Module):
         # Compute Attention scores
         energy = torch.einsum("nqhd,nkhd->nhqk", [queries, keys])
         # Convert attention scores into probability distributions
-        attention = torch.softmax(energy / (self.embed_size ** (1 / 2)), dim=3)
+        attention = torch.softmax(energy / (self.emb_dim ** (1 / 2)), dim=3)
 
         #  Compute the final output
         out = torch.einsum("nhql,nlhd->nqhd", [attention, values]).reshape(
