@@ -6,3 +6,5 @@ ml-latest-*
 .DS_Store
 datasets
 samples
+models/*.pt
+!models/best_model.pt
