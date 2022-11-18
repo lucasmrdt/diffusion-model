@@ -3993,7 +3993,7 @@
     "time": "2022-11-18 06:24:01",
     "score": 12.520231975379119
   },
-  "best_model": {
+  "selected_model": {
     "args": {
       "normalize_range": [
         -1,
@@ -4053,5 +4053,191 @@
     },
     "loss": 0.06679745940491558,
     "time": "2022-11-18 07:52:10"
+  },
+  "d1fc9f369743b4c14adbbdb52e96442ebf203053": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 15,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 1000,
+      "batch_size": 256,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.005146342876832933,
+    "time": "2022-11-18 11:58:28"
+  },
+  "21ba5bbf768d7e524ba60c0b98a8dccc8cea9c06": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 15,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        64,
+        128,
+        256,
+        512
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 1000,
+      "batch_size": 256,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.006260738556738943,
+    "time": "2022-11-18 11:54:50"
+  },
+  "2df0c37909e022ffa32baf0a450d318891698299": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 20,
+      "scheduler": "cosine",
+      "max_beta": 0.999,
+      "channels": [
+        64,
+        128,
+        256,
+        512
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 1000,
+      "batch_size": 256,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.003801067901076749,
+    "time": "2022-11-18 11:58:25"
+  },
+  "5c95d0bbd72dcb8dc8a44d47452dcc55766eadd4": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 20,
+      "scheduler": "cosine",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 1000,
+      "batch_size": 256,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.009955152845941484,
+    "time": "2022-11-18 11:54:19"
+  },
+  "5a552951d66eda7eaa8d53bfc0d17f8e7ce19b78": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 20,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        64,
+        128,
+        256,
+        512
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 1000,
+      "batch_size": 256,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.004516006779158488,
+    "time": "2022-11-18 11:58:30"
+  },
+  "12c8ca15db88a12801fd76bef90820d808a535bf": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 20,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 1000,
+      "batch_size": 256,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.004885802348144353,
+    "time": "2022-11-18 11:58:21"
   }
 }

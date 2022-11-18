@@ -7,4 +7,4 @@ ml-latest-*
 datasets
 samples
 models/*.pt
-!models/best_model.pt
+!models/selected_model.pt
