@@ -1,4 +1,35 @@
 {
+  "selected_model": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 15,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        64,
+        128,
+        256
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.001,
+      "epochs": 50,
+      "batch_size": 256,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.004848397604655474,
+    "time": "2022-11-17 21:17:51",
+    "score": 11.912650726342122
+  },
   "16602e437202951acb8671b85096b338ebda8cde": {
     "args": {
       "normalize_range": [
@@ -3993,37 +4024,6 @@
     "time": "2022-11-18 06:24:01",
     "score": 12.520231975379119
   },
-  "selected_model": {
-    "args": {
-      "normalize_range": [
-        -1,
-        1
-      ],
-      "loss": "x-prev-l2",
-      "model": "unet_v1",
-      "n_steps": 15,
-      "scheduler": "linear-noise",
-      "max_beta": 0.999,
-      "channels": [
-        64,
-        128,
-        256
-      ],
-      "time_attn": false,
-      "mid_attn": false,
-      "optimizer": "adam",
-      "lr": 0.001,
-      "epochs": 2000,
-      "batch_size": 256,
-      "optuna": false,
-      "verbose": false,
-      "compute_fid": true,
-      "sigma": "beta"
-    },
-    "loss": 0.004271531739505008,
-    "time": "2022-11-18 06:24:01",
-    "score": 12.675175537124915
-  },
   "eed97f4175e8b9ce87f9234f099aba71a38387f9": {
     "args": {
       "normalize_range": [
@@ -4052,7 +4052,8 @@
       "sigma": "beta"
     },
     "loss": 0.06679745940491558,
-    "time": "2022-11-18 07:52:10"
+    "time": "2022-11-18 07:52:10",
+    "score": 34.236877023967594
   },
   "d1fc9f369743b4c14adbbdb52e96442ebf203053": {
     "args": {
@@ -4082,8 +4083,8 @@
       "compute_fid": false,
       "sigma": "beta"
     },
-    "loss": 0.005146342876832933,
-    "time": "2022-11-18 11:58:28"
+    "loss": 0.0045101378462277355,
+    "time": "2022-11-18 12:50:33"
   },
   "21ba5bbf768d7e524ba60c0b98a8dccc8cea9c06": {
     "args": {
@@ -4113,8 +4114,8 @@
       "compute_fid": false,
       "sigma": "beta"
     },
-    "loss": 0.006260738556738943,
-    "time": "2022-11-18 11:54:50"
+    "loss": 0.005225618334952742,
+    "time": "2022-11-18 12:50:28"
   },
   "2df0c37909e022ffa32baf0a450d318891698299": {
     "args": {
@@ -4145,7 +4146,8 @@
       "sigma": "beta"
     },
     "loss": 0.003801067901076749,
-    "time": "2022-11-18 11:58:25"
+    "time": "2022-11-18 11:58:25",
+    "score": 18.923009274300654
   },
   "5c95d0bbd72dcb8dc8a44d47452dcc55766eadd4": {
     "args": {
@@ -4176,7 +4178,8 @@
       "sigma": "beta"
     },
     "loss": 0.009955152845941484,
-    "time": "2022-11-18 11:54:19"
+    "time": "2022-11-18 11:54:19",
+    "score": 79.62536942963865
   },
   "5a552951d66eda7eaa8d53bfc0d17f8e7ce19b78": {
     "args": {
@@ -4206,8 +4209,9 @@
       "compute_fid": false,
       "sigma": "beta"
     },
-    "loss": 0.004516006779158488,
-    "time": "2022-11-18 11:58:30"
+    "loss": 0.003484601515810937,
+    "time": "2022-11-18 12:13:10",
+    "score": 12.439147813009356
   },
   "12c8ca15db88a12801fd76bef90820d808a535bf": {
     "args": {
@@ -4237,7 +4241,7 @@
       "compute_fid": false,
       "sigma": "beta"
     },
-    "loss": 0.004885802348144353,
-    "time": "2022-11-18 11:58:21"
+    "loss": 0.0032993299537338316,
+    "time": "2022-11-18 12:50:55"
   }
 }

@@ -73,7 +73,7 @@ def generate(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate Diffusion Model.")
-    parser.add_argument("--model_id", type=str, default="f6e20eee8a2702b174acd04bf0b7fd62b59eb135",
+    parser.add_argument("--model_id", type=str, default="selected_model",
                         help="Model ID to use for generation.")
     parser.add_argument("--sigma", choices=Backwarder.sigma_valid_choices,
                         default=Backwarder.sigma_default, help="Sigma to use for generation.")
