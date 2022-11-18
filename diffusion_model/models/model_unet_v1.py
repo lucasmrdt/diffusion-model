@@ -107,8 +107,7 @@ class UNet(nn.Module):
         self.encoder = Encoder(down_chs)
         self.mid_attn = mid_attn
         if mid_attn:
-            self.attn = MultiHeadAttentionBlock(1, 32//(2**(len(down_chs)-1)), 32//(2**(len(down_chs)-1)),
-                                        reshape=(-1, 128, 32//(2**(len(down_chs)-1)), 32//(2**(len(down_chs)-1))))
+            self.attn = MultiHeadAttentionBlock(1, 32//(2**(len(down_chs)-1)), 32//(2**(len(down_chs)-1)))
         self.decoder = Decoder(up_chs[:-1])
         self.head = nn.Conv2d(
             up_chs[-2], up_chs[-1], kernel_size=3, padding="same")
@@ -116,7 +115,8 @@ class UNet(nn.Module):
     def forward(self, x):
         x, residuals = self.encoder(x)
         if self.mid_attn:
-            x = self.attn(x, x, x, reshape=x.shape)
+            shape = x.shape
+            x = self.attn(x, x, x).reshape(shape)
         x = self.decoder(x, residuals)
         x = self.head(x)
         return x
