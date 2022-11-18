@@ -23,11 +23,10 @@ class MultiHeadAttentionBlock(nn.Module):
 
     def forward(self, query_inputs, key_inputs, value_inputs):
         # getting them shapes
-        N = query_inputs.shape[0]
-        query_inputs, key_inputs, value_inputs = query_inputs.reshape(query_inputs.shape[0], -1, query_inputs.shape[-1]), key_inputs.reshape(
-            key_inputs.shape[0], -1, key_inputs.shape[-1]), value_inputs.reshape(value_inputs.shape[0], -1, value_inputs.shape[-1])
-        value_len, key_len, query_len = value_inputs.shape[
-            1], key_inputs.shape[1], query_inputs.shape[1]
+        batch = query_inputs.shape[0]
+        n = query_inputs.shape[1]
+        query_inputs, key_inputs, value_inputs = query_inputs.reshape(query_inputs.shape[0], query_inputs.shape[1], -1), key_inputs.reshape(
+            key_inputs.shape[0], key_inputs.shape[1], -1), value_inputs.reshape(value_inputs.shape[0], value_inputs.shape[1], -1)
 
         # Create Q, K, and V using input vectors
         q = self.to_query(query_inputs)
@@ -35,9 +34,9 @@ class MultiHeadAttentionBlock(nn.Module):
         v = self.to_value(value_inputs)
 
         # Split the embedding into self.heads different pieces
-        values = q.reshape(N, value_len, self.heads, self.head_dim)
-        keys = k.reshape(N, key_len, self.heads, self.head_dim)
-        queries = v.reshape(N, query_len, self.heads, self.head_dim)
+        values = q.reshape(batch, n, self.heads, self.head_dim)
+        keys = k.reshape(batch, n, self.heads, self.head_dim)
+        queries = v.reshape(batch, n, self.heads, self.head_dim)
 
         # Compute Attention scores
         energy = torch.einsum("nqhd,nkhd->nhqk", [queries, keys])
@@ -46,7 +45,7 @@ class MultiHeadAttentionBlock(nn.Module):
 
         #  Compute the final output
         out = torch.einsum("nhql,nlhd->nqhd", [attention, values]).reshape(
-            N, query_len, self.heads * self.head_dim
+            batch, n, self.heads * self.head_dim
         )
 
         if self.reshape is not None:
@@ -108,8 +107,7 @@ class UNet(nn.Module):
         self.encoder = Encoder(down_chs)
         self.mid_attn = mid_attn
         if mid_attn:
-            self.attn = MultiHeadAttentionBlock(
-                1, 32//(2**(len(down_chs)-1)), 32//(2**(len(down_chs)-1)))
+            self.attn = MultiHeadAttentionBlock(1, 64, 64)
         self.decoder = Decoder(up_chs[:-1])
         self.head = nn.Conv2d(
             up_chs[-2], up_chs[-1], kernel_size=3, padding="same")
@@ -117,7 +115,8 @@ class UNet(nn.Module):
     def forward(self, x):
         x, residuals = self.encoder(x)
         if self.mid_attn:
-            x = self.attn(x, x, x, reshape=x.shape)
+            shape = x.shape
+            x = self.attn(x, x, x).reshape(shape)
         x = self.decoder(x, residuals)
         x = self.head(x)
         return x
@@ -159,9 +158,9 @@ class Model_UNet_V1(nn.Module):
 
         if time_attn:
             self.time_attention = MultiHeadAttentionBlock(
-                1, 32*32, 32*32, reshape=(1, 32, 32, -1))
+                1, 32*32, 32*32, reshape=(-1, 1, 32, 32))
 
-    def forward(self, X, t, label):
+    def forward(self, x, t, label):
         t = 2 * t / self.sch.n_steps - 1  # [-1, 1]
         t = self.time_embedding(t)
         t = t[:, None]
@@ -171,8 +170,8 @@ class Model_UNet_V1(nn.Module):
         label = label[:, None]
 
         if self.time_attn:
-            X = self.time_attention(t, X, X)
-        input = torch.cat([X, label, t], dim=1)
+            x = self.time_attention(t, x, x)
+        inputs = torch.cat([x, label, t], dim=1)
 
-        out = self.u_net(input)
+        out = self.u_net(inputs)
         return out
