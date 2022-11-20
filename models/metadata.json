@@ -4305,8 +4305,9 @@
       "compute_fid": false,
       "sigma": "beta"
     },
-    "loss": 0.022134854305016844,
-    "time": "2022-11-20 03:13:52"
+    "loss": 0.022050136794583706,
+    "time": "2022-11-20 04:19:53",
+    "score": 13.017012203162011
   },
   "e058b1c7c0722251544cbd6cea5ef2506e5395fa": {
     "args": {
@@ -4427,5 +4428,95 @@
     },
     "loss": 0.0073035230294247215,
     "time": "2022-11-19 22:52:57"
+  },
+  "027194efbec422f6c4fd3da83f710a05a7ceff2e": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v2",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.0001,
+      "epochs": 2000,
+      "batch_size": 128,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.007421733947069962,
+    "time": "2022-11-20 15:00:03"
+  },
+  "8c917f34aa3eb7503736d4f0edbfa670706aec51": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 15,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "time_attn": true,
+      "mid_attn": true,
+      "optimizer": "adam",
+      "lr": 0.0001,
+      "epochs": 2000,
+      "batch_size": 128,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.17050734615024132,
+    "time": "2022-11-20 15:09:14"
+  },
+  "c3c42e23dc873131f7cc5105f1c826e582661817": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "time_attn": true,
+      "mid_attn": true,
+      "optimizer": "adam",
+      "lr": 0.0001,
+      "epochs": 2000,
+      "batch_size": 128,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.15256469234635558,
+    "time": "2022-11-20 15:05:02"
   }
 }
