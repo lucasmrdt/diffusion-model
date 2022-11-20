@@ -41,7 +41,7 @@ class model_Conv2D(nn.Module):
         )
 
         self.input = nn.Sequential(
-            nn.Conv2d(3, depth, 3, padding="same"),
+            nn.Conv2d(3, width, 3, padding="same"),
             nn.ReLU(),
         )
         self.hidden = nn.ModuleList([Conv2D_relu(width, width) for _ in range(depth)])
