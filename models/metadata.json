@@ -7,29 +7,27 @@
       ],
       "loss": "x-prev-l2",
       "model": "unet_v1",
-      "n_steps": 15,
+      "n_steps": 10,
       "scheduler": "linear-noise",
       "max_beta": 0.999,
       "channels": [
+        32,
         64,
-        128,
-        256
+        128
       ],
       "time_attn": false,
       "mid_attn": false,
       "optimizer": "adam",
-      "lr": 0.001,
-      "epochs": 50,
-      "batch_size": 256,
+      "lr": 0.0001,
+      "epochs": 2000,
+      "batch_size": 128,
       "optuna": false,
       "verbose": false,
       "compute_fid": false,
       "sigma": "beta"
     },
-    "loss": 0.004848397604655474,
-    "time": "2022-11-17 21:17:51",
-    "score": 11.912650726342122
-  },
+    "loss": 0.006774073118886239,
+    "time": "2022-11-20 02:41:09"  },
   "16602e437202951acb8671b85096b338ebda8cde": {
     "args": {
       "normalize_range": [
@@ -430,7 +428,7 @@
     },
     "loss": 0.006981033203192055,
     "time": "2022-11-11 22:20:55",
-    "score": 10.822809987081968
+    "score": 10.65275966304705
   },
   "17d2a1ea86a08e4bb547f304550db43b73709075": {
     "args": {
@@ -4085,9 +4083,9 @@
       "compute_fid": false,
       "sigma": "beta"
     },
-    "loss": 0.004339936882024631,
-    "time": "2022-11-18 15:58:21",
-    "score": 15.313353704578304
+    "loss": 0.004315487982239574,
+    "time": "2022-11-18 17:44:03",
+    "score": 12.73195953812558
   },
   "21ba5bbf768d7e524ba60c0b98a8dccc8cea9c06": {
     "args": {
@@ -4118,7 +4116,8 @@
       "sigma": "beta"
     },
     "loss": 0.004827126528834924,
-    "time": "2022-11-18 17:21:13"
+    "time": "2022-11-18 17:21:13",
+    "score": 12.836468800283114
   },
   "2df0c37909e022ffa32baf0a450d318891698299": {
     "args": {
@@ -4212,7 +4211,8 @@
       "sigma": "beta"
     },
     "loss": 0.0032686709106201305,
-    "time": "2022-11-18 16:22:36"
+    "time": "2022-11-18 16:22:36",
+    "score": 13.495770193319032
   },
   "12c8ca15db88a12801fd76bef90820d808a535bf": {
     "args": {
@@ -4245,5 +4245,186 @@
     "loss": 0.003160257573472336,
     "time": "2022-11-18 17:17:15",
     "score": 13.403894977547424
+  },
+  "85d1ee888547fae1a8b230e23fb202a477a1e628": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l1",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.0001,
+      "epochs": 2000,
+      "batch_size": 128,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.021967918836051904,
+    "time": "2022-11-20 02:20:56"
+  },
+  "4c01c180dfab7899329fb80af923488607d4f2bf": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l1",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.0001,
+      "epochs": 2000,
+      "batch_size": 128,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.022137216657777375,
+    "time": "2022-11-20 02:01:15"
+  },
+  "e058b1c7c0722251544cbd6cea5ef2506e5395fa": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.0001,
+      "epochs": 2000,
+      "batch_size": 128,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.006774073118886239,
+    "time": "2022-11-20 02:41:09"
+  },
+  "197e12f5c83b0f21bb3ac1147fb4f3305c9c90c9": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.0001,
+      "epochs": 2000,
+      "batch_size": 128,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.00682598122843553,
+    "time": "2022-11-19 19:58:15",
+    "score": 10.919806231424133
+  },
+  "32e087275f1a1528a89fb8e48ba5461f1fe51c38": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        16,
+        32
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.0001,
+      "epochs": 2000,
+      "batch_size": 128,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.009591092461649376,
+    "time": "2022-11-19 13:49:25"
+  },
+  "7d787b634c6dde57195d9ff0ef5d5537be7099c8": {
+    "args": {
+      "normalize_range": [
+        -1,
+        1
+      ],
+      "loss": "x-prev-l2",
+      "model": "unet_v1",
+      "n_steps": 10,
+      "scheduler": "linear-noise",
+      "max_beta": 0.999,
+      "channels": [
+        32,
+        64
+      ],
+      "time_attn": false,
+      "mid_attn": false,
+      "optimizer": "adam",
+      "lr": 0.0001,
+      "epochs": 2000,
+      "batch_size": 128,
+      "optuna": false,
+      "verbose": false,
+      "compute_fid": false,
+      "sigma": "beta"
+    },
+    "loss": 0.0073035230294247215,
+    "time": "2022-11-19 22:52:57"
   }
 }
