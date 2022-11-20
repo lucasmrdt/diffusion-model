@@ -2,14 +2,12 @@ from .model_unet_v1 import Model_UNet_V1
 from .model_unet_v2 import Model_UNet_V2
 from .model_dense import model_dense
 from .model_Conv2D import model_Conv2D
-from .model_unet_v1_nico import Model_UNet_Attention
 
 
 class ModelGetter:
     valid_choices = [
         "unet_v1",
         "unet_v2",
-        "unet_attention",
         "dense",
         "conv"
     ]
@@ -21,8 +19,6 @@ class ModelGetter:
             return Model_UNet_V1
         elif model == "unet_v2":
             return Model_UNet_V2
-        elif model == "unet_attention":
-            return Model_UNet_Attention
         elif model == "dense":
             return model_dense
         elif model == "conv":

@@ -107,7 +107,7 @@ class UNet(nn.Module):
         self.encoder = Encoder(down_chs)
         self.mid_attn = mid_attn
         if mid_attn:
-            self.attn = MultiHeadAttentionBlock(1, 64, 64)
+            self.attn = MultiHeadAttentionBlock(1, (32//(2**(len(down_chs)-1)))**2, (32//(2**(len(down_chs)-1)))**2)
         self.decoder = Decoder(up_chs[:-1])
         self.head = nn.Conv2d(
             up_chs[-2], up_chs[-1], kernel_size=3, padding="same")
