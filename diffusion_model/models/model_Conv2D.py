@@ -22,7 +22,7 @@ class Conv2D_relu(nn.Module):
 
 class model_Conv2D(nn.Module):
 
-    def __init__(self, scheduler: Scheduler, forwarder: Forwarder, depth: int = 4, width: int = 32, dropout: float = 0.3, *_, **__):
+    def __init__(self, scheduler: Scheduler, forwarder: Forwarder, depth: int = 4, width: int = 32, dropout: float = 0.1, *_, **__):
         super().__init__()
 
         self.sch = scheduler
@@ -44,7 +44,8 @@ class model_Conv2D(nn.Module):
             nn.Conv2d(3, width, 3, padding="same"),
             nn.ReLU(),
         )
-        self.hidden = nn.ModuleList([Conv2D_relu(width, width) for _ in range(depth)])
+        self.hidden = nn.ModuleList(
+            [Conv2D_relu(width, width) for _ in range(depth)])
         self.output = nn.Sequential(
             nn.Dropout(dropout),
             nn.Conv2d(width, 1, 3, padding='same'),
