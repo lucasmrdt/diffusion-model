@@ -1,12 +1,7 @@
 #!/usr/bin/env python3
 
-import torch
-import torch.nn as nn
 import torchvision
-import os
-import json
 import argparse
-import numpy as np
 from tqdm import trange
 
 
